@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hello World - Interactive Experience</title>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="An interactive, premium Hello World web interface demonstrating modern web design, dynamic canvas animations, and web audio synthesis.">
+  <meta name="keywords" content="Hello World, Interactive Web App, Canvas Globe, Web Audio, Glassmorphism, Antigravity">
+  
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+  <!-- Dynamic Particle Background -->
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="app-container">
+    <!-- Navigation / Header -->
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">🌐</span>
+        <span class="logo-text">Hello<span class="accent-text">World</span></span>
+      </div>
+      <div class="controls">
+        <button id="theme-toggle" class="control-btn" title="Toggle Theme" aria-label="Toggle dark/light theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      
+      <!-- Hero Section -->
+      <section class="hero-section">
+        <div class="hero-text-container">
+          <div class="badge">ANTIGRAVITY EXPERIENCE</div>
+          <h1 class="hero-title">
+            <span class="greet-transition" id="greeting-text">Hello World</span>
+          </h1>
+          <p class="hero-subtitle">
+            Experience the traditional first step of coding reimagined as an interactive, multisensory journey. Explore globe coordinates, terminal compilations, and dynamic vibe synthesis.
+          </p>
+          
+          <!-- Vibe Mixer Card -->
+          <div class="card vibe-card">
+            <h3>Vibe Mixer</h3>
+            <div class="form-group">
+              <label for="user-name">Your Name</label>
+              <input type="text" id="user-name" placeholder="Enter name..." maxlength="20">
+            </div>
+            <div class="form-group">
+              <label>Select Vibe Style</label>
+              <div class="vibe-selectors">
+                <button class="vibe-btn active" data-vibe="cosmic">Cosmic Aurora</button>
+                <button class="vibe-btn" data-vibe="cyber">Cyberpunk Matrix</button>
+                <button class="vibe-btn" data-vibe="synth">Retro Synthwave</button>
+                <button class="vibe-btn" data-vibe="zen">Zen Blossom</button>
+              </div>
+            </div>
+            <button id="synthesize-btn" class="primary-btn">
+              <span>Synthesize Vibe</span>
+              <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Globe Section -->
+        <div class="globe-container-wrapper">
+          <div class="globe-container">
+            <canvas id="globe-canvas"></canvas>
+            <div class="globe-overlay-card">
+              <div class="overlay-header">
+                <span class="pulse-indicator"></span>
+                <span class="overlay-title">Globe Coordinates</span>
+              </div>
+              <div class="coordinate-details">
+                <div class="coord-item">
+                  <span class="coord-label">Region:</span>
+                  <span class="coord-val" id="globe-region">Rotating...</span>
+                </div>
+                <div class="coord-item">
+                  <span class="coord-label">Greeting:</span>
+                  <span class="coord-val accent-text" id="globe-greeting">Click a Node</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Terminal / Showroom Section -->
+      <section class="showroom-section">
+        <div class="section-header">
+          <h2>Compiler Showroom</h2>
+          <p>Choose a programming language and run the canonical script in our simulated compiler.</p>
+        </div>
+
+        <div class="showroom-grid">
+          <!-- Left side: Language Selector -->
+          <div class="lang-selector-card card">
+            <h3>Select Language</h3>
+            <div class="lang-list">
+              <button class="lang-item active" data-lang="js">
+                <span class="lang-icon js-brand">JS</span>
+                <span class="lang-name">JavaScript</span>
+              </button>
+              <button class="lang-item" data-lang="py">
+                <span class="lang-icon py-brand">PY</span>
+                <span class="lang-name">Python</span>
+              </button>
+              <button class="lang-item" data-lang="rust">
+                <span class="lang-icon rust-brand">RS</span>
+                <span class="lang-name">Rust</span>
+              </button>
+              <button class="lang-item" data-lang="cpp">
+                <span class="lang-icon cpp-brand">C++</span>
+                <span class="lang-name">C++</span>
+              </button>
+              <button class="lang-item" data-lang="go">
+                <span class="lang-icon go-brand">GO</span>
+                <span class="lang-name">Go</span>
+              </button>
+              <button class="lang-item" data-lang="asm">
+                <span class="lang-icon asm-brand">ASM</span>
+                <span class="lang-name">x86 Assembly</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Right side: Code & Terminal Simulator -->
+          <div class="terminal-card card">
+            <div class="terminal-header">
+              <div class="terminal-dots">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+              </div>
+              <span class="terminal-title" id="terminal-filename">hello.js</span>
+              <button id="copy-btn" class="terminal-action-btn" title="Copy Code">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+              </button>
+            </div>
+            
+            <div class="terminal-body">
+              <pre class="code-container"><code id="code-display">console.log("Hello, World!");</code></pre>
+              <div class="terminal-output-separator"></div>
+              <div class="terminal-console">
+                <div class="console-line system-msg">Compiler initialized. Ready to execute.</div>
+                <div id="console-logs"></div>
+              </div>
+            </div>
+
+            <div class="terminal-footer">
+              <button id="run-btn" class="run-btn">
+                <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <span>Run Code</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Language Explorer Map Grid -->
+      <section class="languages-grid-section">
+        <div class="section-header">
+          <h2>World Tour</h2>
+          <p>Click on different greeting blocks to learn how to express "Hello World" around the globe.</p>
+        </div>
+        
+        <div class="grid-container" id="languages-grid">
+          <!-- Will be dynamically populated with greeting cards -->
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>&copy; <span id="current-year">2026</span> Hello World Experience. Engineered with Antigravity.</p>
+    </footer>
+  </div>
+
+  <!-- Notification Banner -->
+  <div id="notification" class="notification">
+    <span id="notification-text">Vibe successfully synthesized!</span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
