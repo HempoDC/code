@@ -1,0 +1,12 @@
+{
+  "name": "hello-world-comparison",
+  "version": "1.0.0",
+  "description": "An interactive, premium Hello World web interface demonstrating modern web design",
+  "scripts": {
+    "dev": "npx -y http-server -p 8080"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
