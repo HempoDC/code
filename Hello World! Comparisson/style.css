@@ -13,9 +13,9 @@
   --card-bg: rgba(255, 255, 255, 0.02);
   --card-border: rgba(255, 255, 255, 0.06);
   --card-border-hover: rgba(255, 255, 255, 0.15);
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --text-muted: #64748b;
+  --text-primary: #000000;
+  --text-secondary: #000000;
+  --text-muted: #000000;
   
   /* Vibe Accent Gradients */
   --accent-cosmic: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);
@@ -29,7 +29,7 @@
   --accent-glow: rgba(167, 139, 250, 0.2);
   --btn-primary-bg: #8b5cf6;
   --btn-primary-hover: #7c3aed;
-  --btn-primary-text: #ffffff;
+  --btn-primary-text: #000000;
   
   --terminal-bg: #09090e;
   
@@ -56,15 +56,15 @@
   --card-bg: rgba(255, 255, 255, 0.5);
   --card-border: rgba(15, 23, 42, 0.08);
   --card-border-hover: rgba(15, 23, 42, 0.18);
-  --text-primary: #0f172a;
-  --text-secondary: #334155;
-  --text-muted: #64748b;
+  --text-primary: #000000;
+  --text-secondary: #000000;
+  --text-muted: #000000;
   
   /* Gradients can remain vibrant but drop shadows are lighter */
   --accent-glow: rgba(109, 40, 217, 0.12);
   --btn-primary-bg: #6d28d9;
   --btn-primary-hover: #5b21b6;
-  --btn-primary-text: #ffffff;
+  --btn-primary-text: #000000;
   --terminal-bg: #111119; /* Terminals look better dark even in light mode */
   
   --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -141,11 +141,11 @@ body {
 }
 
 .accent-text {
-  background: var(--active-accent);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
+  background: none;
+  -webkit-background-clip: initial;
+  -webkit-text-fill-color: initial;
+  background-clip: initial;
+  color: #000000;
 }
 
 .controls {
@@ -214,7 +214,7 @@ body {
   font-weight: 600;
   letter-spacing: 0.05em;
   background: var(--accent-glow);
-  color: var(--accent-color);
+  color: #000000;
   border: 1px solid rgba(255, 255, 255, 0.05);
   margin-bottom: 1.25rem;
   text-transform: uppercase;
@@ -303,11 +303,11 @@ body {
 }
 
 .greet-transition {
-  background: var(--active-accent);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
+  background: none;
+  -webkit-background-clip: initial;
+  -webkit-text-fill-color: initial;
+  background-clip: initial;
+  color: #000000;
   transition: opacity 0.3s ease, transform 0.3s ease;
   display: inline-block;
 }
@@ -613,11 +613,11 @@ body {
 
 /* Tech Brands Colors */
 .js-brand { background: #f7df1e; color: #000; }
-.py-brand { background: #3776ab; color: #fff; }
-.rust-brand { background: #000000; color: #fff; border: 1px solid rgba(255,255,255,0.1); }
-.cpp-brand { background: #00599c; color: #fff; }
-.go-brand { background: #00add8; color: #fff; }
-.asm-brand { background: #607d8b; color: #fff; }
+.py-brand { background: #3776ab; color: #000; }
+.rust-brand { background: #000000; color: #000; border: 1px solid rgba(255,255,255,0.1); }
+.cpp-brand { background: #00599c; color: #000; }
+.go-brand { background: #00add8; color: #000; }
+.asm-brand { background: #607d8b; color: #000; }
 
 .lang-name {
   font-weight: 500;
@@ -696,7 +696,7 @@ body {
 .code-container code {
   font-family: var(--font-mono);
   font-size: 0.95rem;
-  color: #a78bfa;
+  color: #000000;
   white-space: pre-wrap;
   word-break: break-all;
 }
@@ -718,11 +718,11 @@ body {
   line-height: 1.4;
 }
 
-.console-line.system-msg { color: #64748b; }
-.console-line.input-cmd { color: #cbd5e1; }
-.console-line.input-cmd::before { content: "$ "; color: var(--accent-color); }
-.console-line.output { color: #10b981; font-weight: 500; }
-.console-line.error { color: #f43f5e; }
+.console-line.system-msg { color: #000000; }
+.console-line.input-cmd { color: #000000; }
+.console-line.input-cmd::before { content: "$ "; color: #000000; }
+.console-line.output { color: #000000; font-weight: 500; }
+.console-line.error { color: #000000; }
 
 .terminal-footer {
   padding: 1rem 1.5rem;
@@ -817,16 +817,16 @@ body {
   font-family: var(--font-heading);
   font-size: 1.35rem;
   font-weight: 700;
-  color: var(--accent-color);
+  color: #000000;
   transition: color var(--transition-fast);
 }
 
 .lang-card:hover .lang-card-greeting {
-  background: var(--active-accent);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
+  background: none;
+  -webkit-background-clip: initial;
+  -webkit-text-fill-color: initial;
+  background-clip: initial;
+  color: #000000;
 }
 
 .lang-card-pronounce {
@@ -853,7 +853,7 @@ body {
   bottom: 2rem;
   right: 2rem;
   background: var(--active-accent);
-  color: #fff;
+  color: #000000;
   padding: 1rem 1.75rem;
   border-radius: 12px;
   font-size: 0.9rem;
