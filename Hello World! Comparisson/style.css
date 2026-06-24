@@ -921,3 +921,72 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* Custom Vibe Designer Styles */
+.custom-color-panel {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  animation: slideDown var(--transition-normal) ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.color-pickers-row {
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.picker-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.picker-wrapper input[type="color"] {
+  -webkit-appearance: none;
+  appearance: none;
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  background: transparent;
+  transition: transform var(--transition-fast);
+}
+
+.picker-wrapper input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.picker-wrapper input[type="color"]::-webkit-color-swatch {
+  border: 2px solid var(--card-border);
+  border-radius: 50%;
+}
+
+.picker-wrapper input[type="color"]:hover {
+  transform: scale(1.1);
+}
+
+.picker-wrapper span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Editable Code Container focus styling */
+#code-display:focus {
+  outline: none;
+  border-bottom: 2px dashed var(--accent-color);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 4px;
+  padding-bottom: 2px;
+}

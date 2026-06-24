@@ -4,81 +4,1363 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hello World!</title>
+  <title>Hermes Agent — Control Dashboard</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
   <style>
+    /* CSS Custom Properties / Design Tokens */
+    :root {
+      --bg-darker: #080c14;
+      --bg-dark: #0f172a;
+      --bg-card: rgba(30, 41, 59, 0.45);
+      --bg-card-hover: rgba(30, 41, 59, 0.65);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-color-active: rgba(6, 182, 212, 0.4);
+      
+      --cyan: #06b6d4;
+      --cyan-glow: rgba(6, 182, 212, 0.35);
+      --emerald: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.35);
+      --violet: #8b5cf6;
+      --violet-glow: rgba(139, 92, 246, 0.35);
+      --amber: #f59e0b;
+      --amber-glow: rgba(245, 158, 11, 0.35);
+      --rose: #ef4444;
+      --rose-glow: rgba(239, 68, 68, 0.35);
+
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      
+      --font-outfit: 'Outfit', sans-serif;
+      --font-mono: 'Fira Code', monospace;
+      
+      --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Global Reset & Base Styling */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-color) transparent;
+    }
+
+    /* Custom scrollbar for modern browsers */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.25);
     }
 
     body {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, var(--bg-darker) 60%), #000;
       min-height: 100vh;
+      color: var(--text-primary);
+      font-family: var(--font-outfit);
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* Header Bar */
+    header {
+      background: rgba(8, 12, 20, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: var(--transition-normal);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -1px;
+      color: #fff;
+      box-shadow: 0 0 15px var(--cyan-glow);
     }
 
-    .card {
-      background: rgba(30, 41, 59, 0.6);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(51, 65, 85, 0.6);
-      border-radius: 20px;
-      padding: 3rem 4rem;
-      text-align: center;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    }
-
-    h1 {
-      font-size: 4rem;
-      background: linear-gradient(135deg, #22d3ee, #34d399);
+    .brand-title {
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: -0.01em;
+      background: linear-gradient(135deg, var(--text-primary) 30%, var(--text-secondary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      font-weight: 800;
-      letter-spacing: -0.02em;
     }
 
-    p {
-      margin-top: 1rem;
-      color: #94a3b8;
-      font-size: 1.1rem;
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      padding: 0.35rem 0.85rem;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--emerald);
     }
 
-    .glow {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      background: #34d399;
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--emerald);
       border-radius: 50%;
-      margin-top: 1.5rem;
-      box-shadow: 0 0 20px rgba(52, 211, 153, 0.6);
+      box-shadow: 0 0 10px var(--emerald-glow);
       animation: pulse 2s infinite;
     }
 
+    .header-metrics {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .header-metric-item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .header-metric-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .header-metric-val {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    /* Main Container & Layout Grid */
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* Hero / Showcase Section */
+    .hero-section {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.3), rgba(15, 23, 42, 0.3));
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      max-width: 60%;
+    }
+
+    .hero-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, #fff 40%, var(--text-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-tags {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
+      padding: 0.35rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+      transition: var(--transition-fast);
+    }
+
+    .tag:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
+      color: var(--text-primary);
+    }
+
+    /* Grid Layout */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.5rem;
+    }
+
+    /* Card Widgets Base */
+    .widget-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      transition: transform var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal), background var(--transition-normal);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .widget-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.4);
+    }
+
+    .widget-card.active-border {
+      border-color: var(--border-color-active);
+    }
+
+    .widget-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .widget-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .widget-title svg {
+      width: 18px;
+      height: 18px;
+      color: var(--cyan);
+    }
+
+    .widget-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+    }
+
+    /* Card Layout Spanning */
+    .col-large {
+      grid-column: span 7;
+    }
+
+    .col-medium {
+      grid-column: span 5;
+    }
+
+    .col-full {
+      grid-column: span 12;
+    }
+
+    /* Realtime Metrics Widget Content */
+    .metrics-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+
+    .metric-box {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      position: relative;
+    }
+
+    .metric-box-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .metric-value-wrapper {
+      display: flex;
+      align-items: baseline;
+      gap: 0.25rem;
+    }
+
+    .metric-value {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      transition: color var(--transition-fast);
+    }
+
+    .metric-unit {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .progress-bar-wrapper {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--cyan), var(--violet));
+      border-radius: 10px;
+      transition: width 0.8s cubic-bezier(0.1, 0.8, 0.25, 1);
+    }
+
+    /* Live Activity Console Widget */
+    .console-wrapper {
+      display: flex;
+      flex-direction: column;
+      height: 380px;
+      background: rgba(8, 12, 20, 0.9);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow: hidden;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
+    }
+
+    .console-toolbar {
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.6rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .console-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .console-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot-red { background: #ef4444; }
+    .dot-yellow { background: #f59e0b; }
+    .dot-green { background: #10b981; }
+
+    .console-title {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .console-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .console-action-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: var(--transition-fast);
+    }
+
+    .console-action-btn:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .console-output {
+      flex: 1;
+      padding: 1.25rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .log-line {
+      display: flex;
+      gap: 0.75rem;
+      line-height: 1.4;
+      animation: fadeIn 0.15s ease-out;
+    }
+
+    .log-time {
+      color: var(--text-muted);
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    .log-tag {
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .log-tag.info { color: var(--cyan); }
+    .log-tag.success { color: var(--emerald); }
+    .log-tag.warn { color: var(--amber); }
+    .log-tag.error { color: var(--rose); }
+
+    .log-msg {
+      color: var(--text-secondary);
+      word-break: break-all;
+    }
+
+    .console-input-line {
+      border-top: 1px solid var(--border-color);
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      padding: 0.6rem 1rem;
+      gap: 0.5rem;
+    }
+
+    .console-prompt {
+      color: var(--cyan);
+      font-weight: 600;
+      user-select: none;
+    }
+
+    .console-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+
+    /* Capabilities & Modules Widget */
+    .capabilities-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .capability-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: var(--transition-fast);
+    }
+
+    .capability-item:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .capability-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .capability-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      transition: var(--transition-fast);
+    }
+
+    .capability-item:hover .capability-icon {
+      background: rgba(6, 182, 212, 0.1);
+      color: var(--cyan);
+    }
+
+    .capability-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+    }
+
+    .capability-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .capability-status {
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+    }
+
+    .status-ready {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--emerald);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .status-standby {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--amber);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    /* Quick Action Panel Widget */
+    .actions-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.85rem;
+    }
+
+    .action-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      align-items: flex-start;
+      text-align: left;
+      transition: var(--transition-fast);
+    }
+
+    .action-btn:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .action-btn:active {
+      transform: translateY(0);
+    }
+
+    .action-btn-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .action-btn-title svg {
+      width: 14px;
+      height: 14px;
+      transition: transform var(--transition-normal);
+    }
+
+    .action-btn:hover .action-btn-title svg {
+      transform: rotate(15deg);
+    }
+
+    .action-btn-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .action-btn.cyan-btn:hover {
+      border-color: var(--cyan);
+      background: rgba(6, 182, 212, 0.05);
+    }
+    .action-btn.cyan-btn .action-btn-title { color: var(--cyan); }
+
+    .action-btn.violet-btn:hover {
+      border-color: var(--violet);
+      background: rgba(139, 92, 246, 0.05);
+    }
+    .action-btn.violet-btn .action-btn-title { color: var(--violet); }
+
+    .action-btn.emerald-btn:hover {
+      border-color: var(--emerald);
+      background: rgba(16, 185, 129, 0.05);
+    }
+    .action-btn.emerald-btn .action-btn-title { color: var(--emerald); }
+
+    .action-btn.rose-btn:hover {
+      border-color: var(--rose);
+      background: rgba(239, 68, 68, 0.05);
+    }
+    .action-btn.rose-btn .action-btn-title { color: var(--rose); }
+
+    /* Toast Notification System */
+    .toast-container {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      z-index: 1000;
+    }
+
+    .toast {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5);
+      border-left: 4px solid var(--cyan);
+      border-radius: 8px;
+      padding: 0.85rem 1.25rem;
+      color: var(--text-primary);
+      font-size: 0.85rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      animation: slideIn 0.3s cubic-bezier(0.1, 0.8, 0.25, 1), fadeOut 0.3s cubic-bezier(0.1, 0.8, 0.25, 1) var(--fade-delay, 4s) forwards;
+      pointer-events: auto;
+    }
+
+    /* Footer styles */
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2rem;
+    }
+
+    footer a {
+      color: var(--cyan);
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Keyframes Animations */
     @keyframes pulse {
-
-      0%,
-      100% {
+      0%, 100% {
         opacity: 1;
-        transform: scale(1);
+        box-shadow: 0 0 10px var(--emerald-glow);
       }
-
       50% {
         opacity: 0.5;
-        transform: scale(1.3);
+        box-shadow: 0 0 4px var(--emerald-glow);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(100%); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(8px); pointer-events: none; }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+      .col-large, .col-medium {
+        grid-column: span 12;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+      .header-metrics {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .hero-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+      }
+      .hero-content {
+        max-width: 100%;
+      }
+      .metrics-container {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="card">
-    <h1>Hello World!</h1>
-    <p>Experimental project — built by Hermes Agent</p>
-    <div class="glow"></div>
-  </div>
+  <!-- Header Bar -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo">H</div>
+      <div class="brand-title">HERMES v2.5</div>
+      <div class="status-badge">
+        <div class="status-dot"></div>
+        <span>Active</span>
+      </div>
+    </div>
+    
+    <div class="header-metrics">
+      <div class="header-metric-item">
+        <span class="header-metric-label">Uptime</span>
+        <span class="header-metric-val" id="uptime-val">00h 02m 45s</span>
+      </div>
+      <div class="header-metric-item">
+        <span class="header-metric-label">Total Logs</span>
+        <span class="header-metric-val" id="log-count-val">12</span>
+      </div>
+      <div class="header-metric-item">
+        <span class="header-metric-label">Active Tasks</span>
+        <span class="header-metric-val">1</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main>
+    <!-- Hero / Intro -->
+    <section class="hero-section">
+      <div class="hero-content">
+        <h1 class="hero-title">Welcome to the Control Dashboard</h1>
+        <p class="hero-subtitle">Monitoring Hermes Agent workspace runtime, execution logs, and sandbox capabilities in real-time.</p>
+        <div class="hero-tags">
+          <span class="tag">Environment: Ubuntu 22.04</span>
+          <span class="tag">Engine: Gemini 3.5 Flash</span>
+          <span class="tag">Status: Ready to execute</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dashboard Widgets Grid -->
+    <div class="dashboard-grid">
+      
+      <!-- Metrics Card (Left-Medium) -->
+      <section class="widget-card col-medium">
+        <div class="widget-header">
+          <div>
+            <h2 class="widget-title">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+              </svg>
+              Workspace Health
+            </h2>
+            <p class="widget-subtitle">Real-time resource performance metrics</p>
+          </div>
+        </div>
+
+        <div class="metrics-container">
+          <!-- CPU Metric -->
+          <div class="metric-box">
+            <span class="metric-box-title">CPU Utilization</span>
+            <div class="metric-value-wrapper">
+              <span class="metric-value" id="cpu-val">24</span>
+              <span class="metric-unit">%</span>
+            </div>
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar-fill" id="cpu-bar" style="width: 24%"></div>
+            </div>
+          </div>
+
+          <!-- Memory Metric -->
+          <div class="metric-box">
+            <span class="metric-box-title">Memory Allocation</span>
+            <div class="metric-value-wrapper">
+              <span class="metric-value" id="memory-val">1.2</span>
+              <span class="metric-unit">GB</span>
+            </div>
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar-fill" id="memory-bar" style="width: 32%"></div>
+            </div>
+          </div>
+
+          <!-- Agent Latency -->
+          <div class="metric-box">
+            <span class="metric-box-title">Network Latency</span>
+            <div class="metric-value-wrapper">
+              <span class="metric-value" id="latency-val">142</span>
+              <span class="metric-unit">ms</span>
+            </div>
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar-fill" id="latency-bar" style="width: 14%"></div>
+            </div>
+          </div>
+
+          <!-- Sandbox Token Usage -->
+          <div class="metric-box">
+            <span class="metric-box-title">Session Tokens</span>
+            <div class="metric-value-wrapper">
+              <span class="metric-value" id="tokens-val">4.5</span>
+              <span class="metric-unit">K</span>
+            </div>
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar-fill" id="tokens-bar" style="width: 45%"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Terminal / Logs Card (Right-Large) -->
+      <section class="widget-card col-large">
+        <div class="widget-header">
+          <div>
+            <h2 class="widget-title">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+              </svg>
+              Live Console Output
+            </h2>
+            <p class="widget-subtitle">Workspace event logging and terminal feedback</p>
+          </div>
+        </div>
+
+        <div class="console-wrapper">
+          <div class="console-toolbar">
+            <div class="console-dots">
+              <div class="console-dot dot-red"></div>
+              <div class="console-dot dot-yellow"></div>
+              <div class="console-dot dot-green"></div>
+            </div>
+            <span class="console-title">hermes-runtime-bash</span>
+            <div class="console-actions">
+              <button class="console-action-btn" id="pause-console-btn">
+                <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
+                </svg>
+                Pause
+              </button>
+              <button class="console-action-btn" id="clear-console-btn">
+                <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                Clear
+              </button>
+            </div>
+          </div>
+
+          <!-- Console Stream -->
+          <div class="console-output" id="console-output">
+            <!-- Initial logs will be populated by JS -->
+          </div>
+
+          <!-- Interactive Command Line -->
+          <div class="console-input-line">
+            <span class="console-prompt">hermes@agent:~$</span>
+            <input type="text" class="console-input" id="console-input" placeholder="Type a command (try 'help', 'status', 'hello', 'ping')..." autocomplete="off" autofocus>
+          </div>
+        </div>
+      </section>
+
+      <!-- Agent Capabilities Card -->
+      <section class="widget-card col-medium">
+        <div class="widget-header">
+          <div>
+            <h2 class="widget-title">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+              </svg>
+              Capabilities & Sandbox
+            </h2>
+            <p class="widget-subtitle">Active tools registered to runtime</p>
+          </div>
+        </div>
+
+        <div class="capabilities-list">
+          <div class="capability-item">
+            <div class="capability-info">
+              <div class="capability-icon">🔍</div>
+              <div>
+                <div class="capability-name">Web Search</div>
+                <div class="capability-desc">Google search & site content reader</div>
+              </div>
+            </div>
+            <span class="capability-status status-ready">Ready</span>
+          </div>
+
+          <div class="capability-item">
+            <div class="capability-info">
+              <div class="capability-icon">📝</div>
+              <div>
+                <div class="capability-name">File System I/O</div>
+                <div class="capability-desc">Read/write sandbox files</div>
+              </div>
+            </div>
+            <span class="capability-status status-ready">Ready</span>
+          </div>
+
+          <div class="capability-item">
+            <div class="capability-info">
+              <div class="capability-icon">💻</div>
+              <div>
+                <div class="capability-name">Subshell Runner</div>
+                <div class="capability-desc">Execute bash scripting locally</div>
+              </div>
+            </div>
+            <span class="capability-status status-ready">Ready</span>
+          </div>
+
+          <div class="capability-item">
+            <div class="capability-info">
+              <div class="capability-icon">🖼️</div>
+              <div>
+                <div class="capability-name">Image Generator</div>
+                <div class="capability-desc">Design mockups & asset rendering</div>
+              </div>
+            </div>
+            <span class="capability-status status-standby">Standby</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Commands Card -->
+      <section class="widget-card col-large">
+        <div class="widget-header">
+          <div>
+            <h2 class="widget-title">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.64 8.38m7.41 6a14.98 14.98 0 01-6 6.16m1-4.8H5.25a3 3 0 00-3 3v2.25" />
+              </svg>
+              Quick Control Panel
+            </h2>
+            <p class="widget-subtitle">Trigger live agent subroutines instantly</p>
+          </div>
+        </div>
+
+        <div class="actions-grid">
+          <button class="action-btn cyan-btn" onclick="runDiagnostic()">
+            <span class="action-btn-title">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+              Run Full Diagnostic
+            </span>
+            <span class="action-btn-desc">Validates file permissions & tool linkages.</span>
+          </button>
+
+          <button class="action-btn violet-btn" onclick="triggerBoost()">
+            <span class="action-btn-title">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              Trigger Speed Boost
+            </span>
+            <span class="action-btn-desc">Temporarily overclock task execution times.</span>
+          </button>
+
+          <button class="action-btn emerald-btn" onclick="checkForUpdates()">
+            <span class="action-btn-title">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 12H16" />
+              </svg>
+              Scan Workspace Changes
+            </span>
+            <span class="action-btn-desc">Sync current directory index dynamically.</span>
+          </button>
+
+          <button class="action-btn rose-btn" onclick="simulateError()">
+            <span class="action-btn-title">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              Simulate Core Exception
+            </span>
+            <span class="action-btn-desc">Tests emergency fallback mechanisms.</span>
+          </button>
+        </div>
+      </section>
+      
+    </div>
+  </main>
+
+  <!-- Notification Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Hermes Agent Dashboard v2.5 — Pair Programmed with <a href="https://deepmind.google" target="_blank">Google DeepMind</a>. Backed by Gemini.</p>
+  </footer>
+
+  <!-- Interactivity Javascript Logic -->
+  <script>
+    // System Uptime Clock
+    let startTime = Date.now() - 165000; // Start with 2m 45s of active time
+    const uptimeVal = document.getElementById('uptime-val');
+
+    function updateUptime() {
+      const diff = Date.now() - startTime;
+      const hours = Math.floor(diff / 3600000).toString().padStart(2, '0');
+      const mins = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+      const secs = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+      uptimeVal.textContent = `${hours}h ${mins}m ${secs}s`;
+    }
+    setInterval(updateUptime, 1000);
+
+    // Live Resource Performance Randomizer
+    const cpuVal = document.getElementById('cpu-val');
+    const cpuBar = document.getElementById('cpu-bar');
+    const memoryVal = document.getElementById('memory-val');
+    const memoryBar = document.getElementById('memory-bar');
+    const latencyVal = document.getElementById('latency-val');
+    const latencyBar = document.getElementById('latency-bar');
+    const tokensVal = document.getElementById('tokens-val');
+    const tokensBar = document.getElementById('tokens-bar');
+
+    let currentCpu = 24;
+    let currentMem = 1.22;
+    let currentLat = 142;
+    let totalTokens = 4.54;
+
+    function randomizeMetrics() {
+      // Small walks to make the data feel real
+      currentCpu = Math.max(10, Math.min(95, Math.round(currentCpu + (Math.random() * 12 - 6))));
+      currentMem = Math.max(0.8, Math.min(3.6, parseFloat((currentMem + (Math.random() * 0.1 - 0.05)).toFixed(2))));
+      currentLat = Math.max(80, Math.min(450, Math.round(currentLat + (Math.random() * 40 - 20))));
+      totalTokens = parseFloat((totalTokens + (Math.random() * 0.02)).toFixed(2));
+
+      cpuVal.textContent = currentCpu;
+      cpuBar.style.width = `${currentCpu}%`;
+
+      memoryVal.textContent = currentMem;
+      const memPercentage = Math.round((currentMem / 4.0) * 100);
+      memoryBar.style.width = `${memPercentage}%`;
+
+      latencyVal.textContent = currentLat;
+      const latPercentage = Math.round((currentLat / 500) * 100);
+      latencyBar.style.width = `${latPercentage}%`;
+
+      tokensVal.textContent = totalTokens;
+      const tokPercentage = Math.round((totalTokens / 10) * 100);
+      tokensBar.style.width = `${tokPercentage}%`;
+    }
+    setInterval(randomizeMetrics, 2500);
+
+    // Console Logging & Command System
+    const consoleOutput = document.getElementById('console-output');
+    const consoleInput = document.getElementById('console-input');
+    const pauseBtn = document.getElementById('pause-console-btn');
+    const clearBtn = document.getElementById('clear-console-btn');
+    const logCountVal = document.getElementById('log-count-val');
+
+    let isConsolePaused = false;
+    let logCounter = 0;
+
+    const initialLogs = [
+      { tag: 'info', msg: 'System initialization sequence triggered.' },
+      { tag: 'info', msg: 'Workspace mapped successfully to directory "/home/hempo/code/hello-world"' },
+      { tag: 'success', msg: 'Core Gemini 3.5 engine handshake status: 200 OK' },
+      { tag: 'info', msg: 'Preloading file write and view tools...' },
+      { tag: 'success', msg: 'Visual components loaded. Fluid Layout: ACTIVE.' },
+      { tag: 'warn', msg: 'Sandbox file system usage: 4.5KB/10MB' },
+      { tag: 'success', msg: 'Hermes listening on console subchannel. Enter instructions below.' }
+    ];
+
+    function createTimestamp() {
+      const now = new Date();
+      return now.toTimeString().split(' ')[0];
+    }
+
+    function addLogLine(tag, msg) {
+      logCounter++;
+      logCountVal.textContent = logCounter;
+      
+      if (isConsolePaused) return;
+
+      const line = document.createElement('div');
+      line.className = 'log-line';
+      
+      const timeSpan = document.createElement('span');
+      timeSpan.className = 'log-time';
+      timeSpan.textContent = createTimestamp();
+      
+      const tagSpan = document.createElement('span');
+      tagSpan.className = `log-tag ${tag}`;
+      tagSpan.textContent = `[${tag.toUpperCase()}]`;
+      
+      const msgSpan = document.createElement('span');
+      msgSpan.className = 'log-msg';
+      msgSpan.textContent = msg;
+
+      line.appendChild(timeSpan);
+      line.appendChild(tagSpan);
+      line.appendChild(msgSpan);
+      
+      consoleOutput.appendChild(line);
+      consoleOutput.scrollTop = consoleOutput.scrollHeight;
+    }
+
+    // Populate initial logs
+    initialLogs.forEach(log => addLogLine(log.tag, log.msg));
+
+    // Automated periodic logging simulation
+    const streamMsgs = [
+      { tag: 'info', msg: 'Analyzing local repository change history...' },
+      { tag: 'info', msg: 'Active memory garbage collection run completed in 1.4ms' },
+      { tag: 'success', msg: 'Synced sandbox file tree state with cache.' },
+      { tag: 'info', msg: 'Ping workspace host: roundtrip 142ms' },
+      { tag: 'warn', msg: 'Token buffer capacity reaching 45% threshold' },
+      { tag: 'info', msg: 'Optimizing circular gauges and layout frames.' }
+    ];
+
+    setInterval(() => {
+      if (Math.random() > 0.4) {
+        const item = streamMsgs[Math.floor(Math.random() * streamMsgs.length)];
+        addLogLine(item.tag, item.msg);
+      }
+    }, 4500);
+
+    // Toolbar Pause & Clear Actions
+    pauseBtn.addEventListener('click', () => {
+      isConsolePaused = !isConsolePaused;
+      if (isConsolePaused) {
+        pauseBtn.innerHTML = `
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+          </svg> Resume`;
+        showToast('Console output paused.');
+      } else {
+        pauseBtn.innerHTML = `
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
+          </svg> Pause`;
+        showToast('Console output resumed.');
+      }
+    });
+
+    clearBtn.addEventListener('click', () => {
+      consoleOutput.innerHTML = '';
+      showToast('Console screen cleared.');
+    });
+
+    // Console Command Input Interpreter
+    consoleInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const cmd = consoleInput.value.trim();
+        if (!cmd) return;
+        
+        addLogLine('info', `guest_user: ${cmd}`);
+        consoleInput.value = '';
+        
+        setTimeout(() => {
+          interpretCommand(cmd);
+        }, 300);
+      }
+    });
+
+    function interpretCommand(cmd) {
+      const lower = cmd.toLowerCase();
+      if (lower === 'help') {
+        addLogLine('success', 'Available commands:');
+        addLogLine('info', '  - status : Display current dashboard metrics overview');
+        addLogLine('info', '  - hello  : Friendly message from Hermes Agent');
+        addLogLine('info', '  - ping   : Return network roundtrip test');
+        addLogLine('info', '  - clear  : Wipe console logs');
+      } else if (lower === 'status') {
+        addLogLine('success', `Dashboard: Uptime=${uptimeVal.textContent} | CPU=${currentCpu}% | Mem=${currentMem}GB | Latency=${currentLat}ms`);
+      } else if (lower === 'hello') {
+        addLogLine('success', 'Hello from the other side! I am Hermes Agent, powered by Google DeepMind. How can I build with you today?');
+      } else if (lower === 'ping') {
+        addLogLine('info', `PING localhost (127.0.0.1): 56 data bytes`);
+        setTimeout(() => addLogLine('success', `64 bytes from 127.0.0.1: seq=1 ttl=64 time=${currentLat - 20} ms`), 200);
+      } else if (lower === 'clear') {
+        consoleOutput.innerHTML = '';
+        showToast('Console screen cleared.');
+      } else {
+        addLogLine('error', `Command not found: "${cmd}". Type "help" for a list of valid commands.`);
+      }
+    }
+
+    // Quick Actions Panel Interactivity
+    function runDiagnostic() {
+      showToast('Diagnostic sequence starting...');
+      addLogLine('warn', 'DIAGNOSTIC: Commencing full platform evaluation...');
+      
+      let steps = [
+        { msg: 'Checking browser subagent communication... OK', tag: 'success' },
+        { msg: 'Analyzing local file integrity (/home/hempo/code/hello-world)... OK', tag: 'success' },
+        { msg: 'Validating tool system permissions... OK', tag: 'success' },
+        { msg: 'Checking memory leaks and environment sanity... CLEAN', tag: 'success' }
+      ];
+
+      steps.forEach((step, idx) => {
+        setTimeout(() => {
+          addLogLine(step.tag, step.msg);
+          if (idx === steps.length - 1) {
+            showToast('Diagnostics completed. All systems functional!', 'emerald');
+            addLogLine('success', 'DIAGNOSTIC COMPLETE: 100% operational.');
+          }
+        }, (idx + 1) * 800);
+      });
+    }
+
+    function triggerBoost() {
+      showToast('Overclocking enabled. Performance boosted!', 'violet');
+      addLogLine('warn', 'OVERCLOCK: Performance speed boost active. Latency stabilized.');
+      
+      const oldLat = currentLat;
+      currentLat = 42; // Low latency boost
+      currentCpu = Math.round(currentCpu * 1.5); // Up utilization
+      
+      randomizeMetrics();
+      
+      setTimeout(() => {
+        currentLat = oldLat;
+        addLogLine('info', 'OVERCLOCK: Performance boost timed out. Returning to baseline metrics.');
+        showToast('Boost window expired. System returned to default state.');
+      }, 5000);
+    }
+
+    function checkForUpdates() {
+      showToast('Scanning index...');
+      addLogLine('info', 'SYNC: Indexing directory content updates...');
+      setTimeout(() => {
+        addLogLine('success', 'SYNC COMPLETE: index.html is fully up to date with workspace repository.');
+        showToast('Sync successful!', 'emerald');
+      }, 1000);
+    }
+
+    function simulateError() {
+      showToast('Core exception simulated!', 'rose');
+      addLogLine('error', 'EXCEPTION: Runtime encountered stack overflow error (0xFD432)');
+      addLogLine('warn', 'SYSTEM: Initiating sandbox isolation protocol...');
+      
+      const prevCpu = currentCpu;
+      currentCpu = 95;
+      randomizeMetrics();
+      
+      setTimeout(() => {
+        addLogLine('success', 'RECOVERY: Successfully hot-swapped call frame to sandbox safety loop. System recovered.');
+        currentCpu = prevCpu;
+        randomizeMetrics();
+      }, 2500);
+    }
+
+    // Toast Notifications System
+    const toastContainer = document.getElementById('toast-container');
+
+    function showToast(message, theme = 'cyan') {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      
+      // Theme left-border setting
+      if (theme === 'violet') {
+        toast.style.borderLeftColor = 'var(--violet)';
+      } else if (theme === 'emerald') {
+        toast.style.borderLeftColor = 'var(--emerald)';
+      } else if (theme === 'rose') {
+        toast.style.borderLeftColor = 'var(--rose)';
+      } else if (theme === 'amber') {
+        toast.style.borderLeftColor = 'var(--amber)';
+      }
+
+      toast.innerHTML = `
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color: ${
+          theme === 'cyan' ? 'var(--cyan)' :
+          theme === 'violet' ? 'var(--violet)' :
+          theme === 'emerald' ? 'var(--emerald)' :
+          theme === 'rose' ? 'var(--rose)' : 'var(--amber)'
+        }">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>${message}</span>
+      `;
+      
+      toastContainer.appendChild(toast);
+      
+      // Auto remove after animation completes
+      setTimeout(() => {
+        toast.remove();
+      }, 4300);
+    }
+  </script>
 </body>
 
 </html>

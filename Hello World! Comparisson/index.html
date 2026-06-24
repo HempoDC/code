@@ -81,6 +81,21 @@
                 <button class="vibe-btn" data-vibe="cyber">Cyberpunk Matrix</button>
                 <button class="vibe-btn" data-vibe="synth">Retro Synthwave</button>
                 <button class="vibe-btn" data-vibe="zen">Zen Blossom</button>
+                <button class="vibe-btn" data-vibe="custom" id="custom-vibe-btn">Custom Design</button>
+              </div>
+            </div>
+            <!-- Custom Vibe Color Pickers -->
+            <div class="form-group custom-color-panel" id="custom-color-panel" style="display: none;">
+              <label>Custom Vibe Colors</label>
+              <div class="color-pickers-row">
+                <div class="picker-wrapper">
+                  <input type="color" id="vibe-color-1" value="#6366f1" title="Start Accent">
+                  <span>Start Color</span>
+                </div>
+                <div class="picker-wrapper">
+                  <input type="color" id="vibe-color-2" value="#a855f7" title="End Accent">
+                  <span>End Color</span>
+                </div>
               </div>
             </div>
             <button id="synthesize-btn" class="primary-btn">
@@ -174,7 +189,7 @@
             </div>
 
             <div class="terminal-body">
-              <pre class="code-container"><code id="code-display">console.log("Hello, World!");</code></pre>
+              <pre class="code-container"><code id="code-display" contenteditable="true" spellcheck="false" title="Click to edit this code!">console.log("Hello, World!");</code></pre>
               <div class="terminal-output-separator"></div>
               <div class="terminal-console">
                 <div class="console-line system-msg">Compiler initialized. Ready to execute.</div>
