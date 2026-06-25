@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +9,10 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
   <style>
     /* CSS Custom Properties / Design Tokens */
     :root {
@@ -19,7 +22,7 @@
       --bg-card-hover: rgba(30, 41, 59, 0.65);
       --border-color: rgba(255, 255, 255, 0.08);
       --border-color-active: rgba(6, 182, 212, 0.4);
-      
+
       --cyan: #06b6d4;
       --cyan-glow: rgba(6, 182, 212, 0.35);
       --emerald: #10b981;
@@ -34,10 +37,10 @@
       --text-primary: #f8fafc;
       --text-secondary: #94a3b8;
       --text-muted: #64748b;
-      
+
       --font-outfit: 'Outfit', sans-serif;
       --font-mono: 'Fira Code', monospace;
-      
+
       --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -56,13 +59,16 @@
       width: 6px;
       height: 6px;
     }
+
     ::-webkit-scrollbar-track {
       background: transparent;
     }
+
     ::-webkit-scrollbar-thumb {
       background: rgba(255, 255, 255, 0.1);
       border-radius: 4px;
     }
+
     ::-webkit-scrollbar-thumb:hover {
       background: rgba(255, 255, 255, 0.25);
     }
@@ -399,7 +405,7 @@
       overflow: hidden;
       font-family: var(--font-mono);
       font-size: 0.85rem;
-      box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
     }
 
     .console-toolbar {
@@ -422,9 +428,17 @@
       border-radius: 50%;
     }
 
-    .dot-red { background: #ef4444; }
-    .dot-yellow { background: #f59e0b; }
-    .dot-green { background: #10b981; }
+    .dot-red {
+      background: #ef4444;
+    }
+
+    .dot-yellow {
+      background: #f59e0b;
+    }
+
+    .dot-green {
+      background: #10b981;
+    }
 
     .console-title {
       color: var(--text-muted);
@@ -483,10 +497,21 @@
       flex-shrink: 0;
     }
 
-    .log-tag.info { color: var(--cyan); }
-    .log-tag.success { color: var(--emerald); }
-    .log-tag.warn { color: var(--amber); }
-    .log-tag.error { color: var(--rose); }
+    .log-tag.info {
+      color: var(--cyan);
+    }
+
+    .log-tag.success {
+      color: var(--emerald);
+    }
+
+    .log-tag.warn {
+      color: var(--amber);
+    }
+
+    .log-tag.error {
+      color: var(--rose);
+    }
 
     .log-msg {
       color: var(--text-secondary);
@@ -653,25 +678,37 @@
       border-color: var(--cyan);
       background: rgba(6, 182, 212, 0.05);
     }
-    .action-btn.cyan-btn .action-btn-title { color: var(--cyan); }
+
+    .action-btn.cyan-btn .action-btn-title {
+      color: var(--cyan);
+    }
 
     .action-btn.violet-btn:hover {
       border-color: var(--violet);
       background: rgba(139, 92, 246, 0.05);
     }
-    .action-btn.violet-btn .action-btn-title { color: var(--violet); }
+
+    .action-btn.violet-btn .action-btn-title {
+      color: var(--violet);
+    }
 
     .action-btn.emerald-btn:hover {
       border-color: var(--emerald);
       background: rgba(16, 185, 129, 0.05);
     }
-    .action-btn.emerald-btn .action-btn-title { color: var(--emerald); }
+
+    .action-btn.emerald-btn .action-btn-title {
+      color: var(--emerald);
+    }
 
     .action-btn.rose-btn:hover {
       border-color: var(--rose);
       background: rgba(239, 68, 68, 0.05);
     }
-    .action-btn.rose-btn .action-btn-title { color: var(--rose); }
+
+    .action-btn.rose-btn .action-btn-title {
+      color: var(--rose);
+    }
 
     /* Toast Notification System */
     .toast-container {
@@ -687,7 +724,7 @@
     .toast {
       background: rgba(15, 23, 42, 0.9);
       border: 1px solid var(--border-color);
-      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
       border-left: 4px solid var(--cyan);
       border-radius: 8px;
       padding: 0.85rem 1.25rem;
@@ -715,16 +752,20 @@
       color: var(--cyan);
       text-decoration: none;
     }
+
     footer a:hover {
       text-decoration: underline;
     }
 
     /* Keyframes Animations */
     @keyframes pulse {
-      0%, 100% {
+
+      0%,
+      100% {
         opacity: 1;
         box-shadow: 0 0 10px var(--emerald-glow);
       }
+
       50% {
         opacity: 0.5;
         box-shadow: 0 0 4px var(--emerald-glow);
@@ -732,23 +773,47 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @keyframes slideIn {
-      from { opacity: 0; transform: translateX(100%); }
-      to { opacity: 1; transform: translateX(0); }
+      from {
+        opacity: 0;
+        transform: translateX(100%);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
 
     @keyframes fadeOut {
-      from { opacity: 1; transform: translateY(0); }
-      to { opacity: 0; transform: translateY(8px); pointer-events: none; }
+      from {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      to {
+        opacity: 0;
+        transform: translateY(8px);
+        pointer-events: none;
+      }
     }
 
     /* Responsive adjustments */
     @media (max-width: 1024px) {
-      .col-large, .col-medium {
+
+      .col-large,
+      .col-medium {
         grid-column: span 12;
       }
     }
@@ -759,18 +824,22 @@
         gap: 1rem;
         align-items: flex-start;
       }
+
       .header-metrics {
         width: 100%;
         justify-content: space-between;
       }
+
       .hero-section {
         flex-direction: column;
         align-items: flex-start;
         gap: 1.5rem;
       }
+
       .hero-content {
         max-width: 100%;
       }
+
       .metrics-container {
         grid-template-columns: 1fr;
       }
@@ -789,7 +858,7 @@
         <span>Active</span>
       </div>
     </div>
-    
+
     <div class="header-metrics">
       <div class="header-metric-item">
         <span class="header-metric-label">Uptime</span>
@@ -812,7 +881,8 @@
     <section class="hero-section">
       <div class="hero-content">
         <h1 class="hero-title">Welcome to the Control Dashboard</h1>
-        <p class="hero-subtitle">Monitoring Hermes Agent workspace runtime, execution logs, and sandbox capabilities in real-time.</p>
+        <p class="hero-subtitle">Monitoring Hermes Agent workspace runtime, execution logs, and sandbox capabilities in
+          real-time.</p>
         <div class="hero-tags">
           <span class="tag">Environment: Ubuntu 22.04</span>
           <span class="tag">Engine: Gemini 3.5 Flash</span>
@@ -823,14 +893,16 @@
 
     <!-- Dashboard Widgets Grid -->
     <div class="dashboard-grid">
-      
+
       <!-- Metrics Card (Left-Medium) -->
       <section class="widget-card col-medium">
         <div class="widget-header">
           <div>
             <h2 class="widget-title">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
               </svg>
               Workspace Health
             </h2>
@@ -894,8 +966,10 @@
         <div class="widget-header">
           <div>
             <h2 class="widget-title">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
               </svg>
               Live Console Output
             </h2>
@@ -920,7 +994,8 @@
               </button>
               <button class="console-action-btn" id="clear-console-btn">
                 <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>
                 Clear
               </button>
@@ -935,7 +1010,8 @@
           <!-- Interactive Command Line -->
           <div class="console-input-line">
             <span class="console-prompt">hermes@agent:~$</span>
-            <input type="text" class="console-input" id="console-input" placeholder="Type a command (try 'help', 'status', 'hello', 'ping')..." autocomplete="off" autofocus>
+            <input type="text" class="console-input" id="console-input"
+              placeholder="Type a command (try 'help', 'status', 'hello', 'ping')..." autocomplete="off" autofocus>
           </div>
         </div>
       </section>
@@ -945,8 +1021,10 @@
         <div class="widget-header">
           <div>
             <h2 class="widget-title">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
               </svg>
               Capabilities & Sandbox
             </h2>
@@ -1006,8 +1084,10 @@
         <div class="widget-header">
           <div>
             <h2 class="widget-title">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.64 8.38m7.41 6a14.98 14.98 0 01-6 6.16m1-4.8H5.25a3 3 0 00-3 3v2.25" />
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.64 8.38m7.41 6a14.98 14.98 0 01-6 6.16m1-4.8H5.25a3 3 0 00-3 3v2.25" />
               </svg>
               Quick Control Panel
             </h2>
@@ -1018,8 +1098,10 @@
         <div class="actions-grid">
           <button class="action-btn cyan-btn" onclick="runDiagnostic()">
             <span class="action-btn-title">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
               Run Full Diagnostic
             </span>
@@ -1028,7 +1110,8 @@
 
           <button class="action-btn violet-btn" onclick="triggerBoost()">
             <span class="action-btn-title">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               Trigger Speed Boost
@@ -1038,8 +1121,10 @@
 
           <button class="action-btn emerald-btn" onclick="checkForUpdates()">
             <span class="action-btn-title">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 12H16" />
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 12H16" />
               </svg>
               Scan Workspace Changes
             </span>
@@ -1048,8 +1133,10 @@
 
           <button class="action-btn rose-btn" onclick="simulateError()">
             <span class="action-btn-title">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
               Simulate Core Exception
             </span>
@@ -1057,7 +1144,7 @@
           </button>
         </div>
       </section>
-      
+
     </div>
   </main>
 
@@ -1066,7 +1153,8 @@
 
   <!-- Footer -->
   <footer>
-    <p>Hermes Agent Dashboard v2.5 — Pair Programmed with <a href="https://deepmind.google" target="_blank">Google DeepMind</a>. Backed by Gemini.</p>
+    <p>Hermes Agent Dashboard v2.5 — Pair Programmed with <a href="https://deepmind.google" target="_blank">Google
+        DeepMind</a>. Backed by Gemini.</p>
   </footer>
 
   <!-- Interactivity Javascript Logic -->
@@ -1151,20 +1239,20 @@
     function addLogLine(tag, msg) {
       logCounter++;
       logCountVal.textContent = logCounter;
-      
+
       if (isConsolePaused) return;
 
       const line = document.createElement('div');
       line.className = 'log-line';
-      
+
       const timeSpan = document.createElement('span');
       timeSpan.className = 'log-time';
       timeSpan.textContent = createTimestamp();
-      
+
       const tagSpan = document.createElement('span');
       tagSpan.className = `log-tag ${tag}`;
       tagSpan.textContent = `[${tag.toUpperCase()}]`;
-      
+
       const msgSpan = document.createElement('span');
       msgSpan.className = 'log-msg';
       msgSpan.textContent = msg;
@@ -1172,7 +1260,7 @@
       line.appendChild(timeSpan);
       line.appendChild(tagSpan);
       line.appendChild(msgSpan);
-      
+
       consoleOutput.appendChild(line);
       consoleOutput.scrollTop = consoleOutput.scrollHeight;
     }
@@ -1225,10 +1313,10 @@
       if (e.key === 'Enter') {
         const cmd = consoleInput.value.trim();
         if (!cmd) return;
-        
+
         addLogLine('info', `guest_user: ${cmd}`);
         consoleInput.value = '';
-        
+
         setTimeout(() => {
           interpretCommand(cmd);
         }, 300);
@@ -1262,7 +1350,7 @@
     function runDiagnostic() {
       showToast('Diagnostic sequence starting...');
       addLogLine('warn', 'DIAGNOSTIC: Commencing full platform evaluation...');
-      
+
       let steps = [
         { msg: 'Checking browser subagent communication... OK', tag: 'success' },
         { msg: 'Analyzing local file integrity (/home/hempo/code/hello-world)... OK', tag: 'success' },
@@ -1284,13 +1372,13 @@
     function triggerBoost() {
       showToast('Overclocking enabled. Performance boosted!', 'violet');
       addLogLine('warn', 'OVERCLOCK: Performance speed boost active. Latency stabilized.');
-      
+
       const oldLat = currentLat;
       currentLat = 42; // Low latency boost
       currentCpu = Math.round(currentCpu * 1.5); // Up utilization
-      
+
       randomizeMetrics();
-      
+
       setTimeout(() => {
         currentLat = oldLat;
         addLogLine('info', 'OVERCLOCK: Performance boost timed out. Returning to baseline metrics.');
@@ -1311,11 +1399,11 @@
       showToast('Core exception simulated!', 'rose');
       addLogLine('error', 'EXCEPTION: Runtime encountered stack overflow error (0xFD432)');
       addLogLine('warn', 'SYSTEM: Initiating sandbox isolation protocol...');
-      
+
       const prevCpu = currentCpu;
       currentCpu = 95;
       randomizeMetrics();
-      
+
       setTimeout(() => {
         addLogLine('success', 'RECOVERY: Successfully hot-swapped call frame to sandbox safety loop. System recovered.');
         currentCpu = prevCpu;
@@ -1329,7 +1417,7 @@
     function showToast(message, theme = 'cyan') {
       const toast = document.createElement('div');
       toast.className = 'toast';
-      
+
       // Theme left-border setting
       if (theme === 'violet') {
         toast.style.borderLeftColor = 'var(--violet)';
@@ -1342,19 +1430,18 @@
       }
 
       toast.innerHTML = `
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color: ${
-          theme === 'cyan' ? 'var(--cyan)' :
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color: ${theme === 'cyan' ? 'var(--cyan)' :
           theme === 'violet' ? 'var(--violet)' :
-          theme === 'emerald' ? 'var(--emerald)' :
-          theme === 'rose' ? 'var(--rose)' : 'var(--amber)'
+            theme === 'emerald' ? 'var(--emerald)' :
+              theme === 'rose' ? 'var(--rose)' : 'var(--amber)'
         }">
           <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         <span>${message}</span>
       `;
-      
+
       toastContainer.appendChild(toast);
-      
+
       // Auto remove after animation completes
       setTimeout(() => {
         toast.remove();
