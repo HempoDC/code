@@ -1,0 +1,430 @@
+<!DOCTYPE HTML>
+<html lang="sv" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studieportal | IT-infrastrukturspecialist</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Main Style -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <!-- Application Shell -->
+    <div class="app-container">
+        
+        <!-- Sidebar Menu -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <img src="images/logo.png" alt="Portal Logotyp" class="logo-img">
+                <div class="logo-text">
+                    <span class="title">IT-Infra Portal</span>
+                    <span class="subtitle">Studieguide</span>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <button class="nav-btn active" data-tab="dashboard">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    Översikt
+                </button>
+                <button class="nav-btn" data-tab="modules">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    Studiemoduler
+                </button>
+                <button class="nav-btn" data-tab="search-panel">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    Sök resurser
+                </button>
+                <button class="nav-btn" data-tab="quiz-panel">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line><circle cx="12" cy="12" r="10"></circle></svg>
+                    Självrättande Quiz
+                </button>
+                <button class="nav-btn" data-tab="cheatsheets">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="9"></line><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="13" y2="17"></line></svg>
+                    Kommando-Lathundar
+                </button>
+                <button class="nav-btn" data-tab="about">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    Om utbildningen
+                </button>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Växla tema">
+                    <svg class="icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg class="icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <span class="theme-text">Mörkt läge</span>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Mobile Header Bar -->
+        <header class="mobile-header">
+            <div class="mobile-brand">
+                <img src="images/logo.png" alt="Logotyp" class="logo-img-mobile">
+                <h1>IT-Infra Portal</h1>
+            </div>
+            <button id="mobile-menu-btn" class="mobile-menu-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </header>
+        
+        <!-- Main Content Panel -->
+        <main class="main-content">
+            
+            <!-- Dashboard View -->
+            <section id="dashboard" class="tab-content active">
+                <div class="welcome-banner">
+                    <div class="welcome-text">
+                        <h1>IT-infrastrukturspecialist</h1>
+                        <p class="course-badge">Studieguide & Resursportal</p>
+                        <p class="course-desc">
+                            Välkommen till din centrala resursbank för studier till IT-infrastrukturspecialist. Portalen täcker allt från nätverksteknik och serveradministration till molnarkitektur, scripting/automation (IaC/DevOps) samt modern cybersäkerhet.
+                        </p>
+                        <p class="update-text">Använd lathundarna och de inbyggda testerna för att förbereda dig för dina certifieringar.</p>
+                    </div>
+                    
+                    <div class="gauge-card">
+                        <div class="gauge-container">
+                            <svg class="gauge-svg" viewBox="0 0 100 100">
+                                <circle class="gauge-bg" cx="50" cy="50" r="40" fill="none" stroke-width="8"></circle>
+                                <circle id="gauge-fill" class="gauge-fill" cx="50" cy="50" r="40" fill="none" stroke-width="8" stroke-dasharray="251.2" stroke-dashoffset="251.2"></circle>
+                            </svg>
+                            <div class="gauge-overlay">
+                                <span class="gauge-value" id="gauge-value-text">0%</span>
+                                <span class="gauge-label">Framsteg</span>
+                            </div>
+                        </div>
+                        <p class="gauge-desc">Avklarade test & moment: <strong id="progress-desc">0 / 5 quiz avklarade</strong></p>
+                    </div>
+                </div>
+                
+                <!-- Stats Row -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-num" id="stat-modules">5</span>
+                        <span class="stat-lbl">Studieblock</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num" id="stat-topics">25+</span>
+                        <span class="stat-lbl">Ämnesområden</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num" id="stat-quizzes">5</span>
+                        <span class="stat-lbl">Inbyggda Quiz</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num" id="stat-commands">100+</span>
+                        <span class="stat-lbl">Lathundskommandon</span>
+                    </div>
+                </div>
+                
+                <!-- Roadmap Section -->
+                <div class="overview-section">
+                    <h2>Studieplanens 5 Moduler</h2>
+                    <div class="dashboard-modules-grid" id="dashboard-modules-grid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+                
+                <!-- Study Advice Info Cards -->
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>Vägen till IT-infrastrukturspecialist</h3>
+                        <p>Branschen kräver en djup bredd. Du behöver förstå hur datatrafik flödar (Nätverk), var tjänster körs (OS & Virtualisering), hur resurser skalas upp (Molnet), hur processer automatiseras (DevOps/IaC) och hur allt detta skyddas mot yttre hot (Säkerhet). Denna portal samlar de absolut viktigaste koncepten i en fokuserad studieplan.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Rekommenderade Certifieringar</h3>
+                        <p>Som infrastrukturtekniker är certifikat mycket värdefulla. Portalen är anpassad för att matcha kunskapskraven i bl.a: 
+                            <strong>Cisco CCNA</strong> (Nätverk), 
+                            <strong>CompTIA Security+</strong> (Säkerhet), 
+                            <strong>Microsoft AZ-104</strong> (Azure Administrator) och 
+                            <strong>LPI Linux Essentials/LPIC-1</strong> (Linux System Admin).
+                        </p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Modules View -->
+            <section id="modules" class="tab-content">
+                <div class="section-header">
+                    <h2>Studiemoduler & Kursinnehåll</h2>
+                    <p>Här hittar du detaljerade studieguider, laborationer och videolektioner för varje block.</p>
+                </div>
+                
+                <div class="modules-accordion" id="modules-accordion">
+                    <!-- Populated dynamically by app.js -->
+                </div>
+            </section>
+            
+            <!-- Resource Search View -->
+            <section id="search-panel" class="tab-content">
+                <div class="section-header">
+                    <h2>Sök i Resursbanken</h2>
+                    <p>Sök och filtrera bland laborationsinstruktioner, nätverkslabbar, fuskblad och guider.</p>
+                </div>
+                
+                <div class="filter-controls">
+                    <div class="search-box">
+                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" id="resource-search" placeholder="Sök efter labbar, verktyg eller koncept (t.ex. Subnetting, Active Directory, Docker, Terraform)...">
+                        <button id="clear-search" class="clear-btn">&times;</button>
+                    </div>
+                    
+                    <div class="filters-grid">
+                        <div class="filter-group">
+                            <label for="filter-module">Modul</label>
+                            <select id="filter-module">
+                                <option value="all">Alla moduler</option>
+                                <option value="1">Modul 1: Nätverksteknik</option>
+                                <option value="2">Modul 2: Server & OS</option>
+                                <option value="3">Modul 3: Moln & Virtualisering</option>
+                                <option value="4">Modul 4: DevOps & IaC</option>
+                                <option value="5">Modul 5: Säkerhet & Övervakning</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="filter-type">Resurstyp</label>
+                            <select id="filter-type">
+                                <option value="all">Alla resurser</option>
+                                <option value="lab">Laborationer & Uppgifter</option>
+                                <option value="theory">Teoriguider</option>
+                                <option value="cheatsheet">Lathundar</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="filter-difficulty">Kunskapsnivå</label>
+                            <select id="filter-difficulty">
+                                <option value="all">Alla nivåer</option>
+                                <option value="junior">Junior (Grundläggande)</option>
+                                <option value="mid">Mid (Mellannivå)</option>
+                                <option value="senior">Senior (Avancerad)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="search-results-info" id="search-results-info">
+                    Visar resurser...
+                </div>
+                
+                <div class="resources-grid-view" id="resources-grid-view">
+                    <!-- Populated dynamically by app.js -->
+                </div>
+            </section>
+            
+            <!-- Interactive Quiz View -->
+            <section id="quiz-panel" class="tab-content">
+                <div class="section-header">
+                    <h2>Självrättande Kunskapstest</h2>
+                    <p>Utmana dig själv i de olika studieområdena för att utvärdera din teoretiska kunskapsnivå.</p>
+                </div>
+                
+                <div class="quiz-interface-container" id="quiz-interface-container">
+                    
+                    <!-- Quiz Selection View -->
+                    <div id="quiz-selector-view" class="quiz-selector-view">
+                        <h3>Välj ämnesområde att testa</h3>
+                        <div class="quiz-selector-grid" id="quiz-selector-grid">
+                            <!-- Populated dynamically by app.js -->
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Active View -->
+                    <div id="quiz-active-view" class="quiz-active-view" style="display: none;">
+                        <div class="quiz-header">
+                            <div class="quiz-info-row">
+                                <span class="quiz-current-category" id="quiz-cat-title">Ämne</span>
+                                <span class="quiz-progress-text" id="quiz-progress-lbl">Fråga 1 av 5</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill" id="quiz-bar-fill" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="quiz-question-box">
+                            <h4 id="quiz-question-text">Här visas frågan?</h4>
+                            <div class="quiz-options-list" id="quiz-options-list">
+                                <!-- Choices rendered here -->
+                            </div>
+                        </div>
+                        
+                        <div class="quiz-feedback-box" id="quiz-feedback-box" style="display: none;">
+                            <p id="quiz-feedback-text">Rätt eller fel feedback text.</p>
+                        </div>
+                        
+                        <div class="quiz-navigation">
+                            <button id="quiz-next-btn" class="quiz-btn primary-btn" disabled>Svara</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Results View -->
+                    <div id="quiz-result-view" class="quiz-result-view" style="display: none;">
+                        <div class="result-icon-box">
+                            <svg class="icon result-success-icon" id="res-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        </div>
+                        <h3 id="quiz-result-title">Bra jobbat!</h3>
+                        <p class="quiz-result-score" id="quiz-result-score">Du fick 4 av 5 rätt (80%).</p>
+                        <p class="quiz-result-desc" id="quiz-result-desc">Detta test räknas in i ditt framstegsmätare på startsidan.</p>
+                        
+                        <div class="quiz-result-nav">
+                            <button id="quiz-restart-btn" class="quiz-btn secondary-btn">Försök igen</button>
+                            <button id="quiz-exit-btn" class="quiz-btn primary-btn">Tillbaka till val</button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </section>
+            
+            <!-- Command Cheat Sheets View -->
+            <section id="cheatsheets" class="tab-content">
+                <div class="section-header">
+                    <h2>Kommando-Lathundar</h2>
+                    <p>De mest använda kommandona inom nätverk, Linux, server och versionshantering. Klicka på ett kommando för att kopiera det.</p>
+                </div>
+                
+                <div class="cheatsheet-controls">
+                    <div class="cheatsheet-tabs" id="cheatsheet-tabs">
+                        <button class="sheet-tab-btn active" data-sheet="cisco">Cisco IOS</button>
+                        <button class="sheet-tab-btn" data-sheet="linux">Linux Bash</button>
+                        <button class="sheet-tab-btn" data-sheet="powershell">PowerShell</button>
+                        <button class="sheet-tab-btn" data-sheet="git">Git Versionering</button>
+                    </div>
+                    
+                    <div class="cheatsheet-search-box">
+                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" id="cheatsheet-search" placeholder="Sök efter kommandon eller beskrivningar i detta lathund...">
+                    </div>
+                </div>
+                
+                <div class="toast-notification" id="toast-notification">Kommando kopierat till urklipp!</div>
+                
+                <div class="commands-table-container">
+                    <table class="commands-table">
+                        <thead>
+                            <tr>
+                                <th>Kommando</th>
+                                <th>Beskrivning / Funktion</th>
+                                <th>Exempel</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cheatsheet-tbody">
+                            <!-- Populated dynamically by app.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- About Program View -->
+            <section id="about" class="tab-content">
+                <div class="about-grid">
+                    <div class="about-main">
+                        <h2>Utbildning: IT-infrastrukturspecialist</h2>
+                        <p>Denna portal är utformad som ett komplement till yrkeshögskoleutbildningar eller självstudier som syftar till roller som IT-infrastrukturspecialist, Driftstekniker, Nätverkstekniker eller Systemadministratör.</p>
+                        
+                        <div class="curriculum-highlights">
+                            <h3>Viktiga kompetensområden för rollen:</h3>
+                            <div class="highlight-grid">
+                                <div class="highlight-item">
+                                    <div class="hl-number">01</div>
+                                    <h4>Nätverksdesign</h4>
+                                    <p>Skapa stabila, redundanta lokala och globala nätverk, konfigurera brandväggar, routrar och switchar.</p>
+                                </div>
+                                <div class="highlight-item">
+                                    <div class="hl-number">02</div>
+                                    <h4>Server & Virtualisering</h4>
+                                    <p>Driftsätta och underhålla Windows- och Linux-miljöer samt administrera hypervisorer som VMware och Hyper-V.</p>
+                                </div>
+                                <div class="highlight-item">
+                                    <div class="hl-number">03</div>
+                                    <h4>Molnarkitektur</h4>
+                                    <p>Skala ut och underhålla resurser i molnmiljöer med fokus på Microsoft Azure (IaaS, PaaS, SaaS).</p>
+                                </div>
+                                <div class="highlight-item">
+                                    <div class="hl-number">04</div>
+                                    <h4>Automation (IaC)</h4>
+                                    <p>Ersätta manuella installationsrutiner med kod. Konfigurera servrar med Ansible och provisera miljöer med Terraform.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-card">
+                            <h3>Har du frågor eller vill bidra till guiden?</h3>
+                            <p>Studieportalen uppdateras löpande med nya laborationer och quiz-frågor. Kontakta oss för att lägga till resurser.</p>
+                            <a href="mailto:utbildning@infra-specialist.se" class="contact-email-btn">
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                Kontakta Utbildningsansvarig
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="about-sidebar">
+                        <h2>Laborationsmiljöer</h2>
+                        <div class="promo-cards-container">
+                            <div class="promo-card spec-cisco">
+                                <div class="promo-header">
+                                    <span class="promo-tag">Simulator</span>
+                                    <h3>Cisco Packet Tracer</h3>
+                                </div>
+                                <p>Det viktigaste verktyget för att simulera switchar, routrar och nätverkskopplingar under dina nätverksstudier.</p>
+                                <div class="promo-btn">Hämta via NetAcad (Gratis efter konto-registrering)</div>
+                            </div>
+                            
+                            <div class="promo-card spec-ubuntu">
+                                <div class="promo-header">
+                                    <span class="promo-tag">Sandbox</span>
+                                    <h3>Oracle VirtualBox</h3>
+                                </div>
+                                <p>Skapa virtuella maskiner lokalt på din egen PC för att öva installation av Windows Server, Ubuntu och brandväggar.</p>
+                                <div class="promo-btn">Hämta via VirtualBox.org (Öppen källkod)</div>
+                            </div>
+                            
+                            <div class="promo-card spec-ms">
+                                <div class="promo-header">
+                                    <span class="promo-tag">Molnövning</span>
+                                    <h3>Azure Free Tier</h3>
+                                </div>
+                                <p>Skapa ett gratis Azure-konto för att få tillgång till virtuella maskiner, virtuella nätverk (VNets) och App Services under 12 månader.</p>
+                                <div class="promo-btn">Registrera via Azure Portal (Kräver MS-konto)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+        </main>
+        
+    </div>
+
+    <!-- Study Reader Modal -->
+    <div id="reader-modal" class="reader-modal">
+        <div class="reader-modal-content">
+            <div class="reader-modal-header">
+                <div class="reader-meta">
+                    <span id="reader-category" class="res-tag">Kategori</span>
+                    <span id="reader-difficulty" class="diff-badge">Nivå</span>
+                </div>
+                <button id="close-reader-modal" class="close-reader-btn" aria-label="Stäng läsare">&times;</button>
+            </div>
+            <div class="reader-modal-body" id="reader-modal-body">
+                <h2 id="reader-title">Titel på guiden</h2>
+                <div id="reader-text-content">
+                    <!-- Dynamic HTML content goes here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Drawer Overlay -->
+    <div id="mobile-overlay" class="mobile-overlay"></div>
+    
+    <!-- Script Files -->
+    <script src="app.js"></script>
+</body>
+</html>
