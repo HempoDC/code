@@ -1,0 +1,306 @@
+<!DOCTYPE HTML>
+<html lang="sv" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dator- och Nätverksteknik | DAODAC0</title>
+    <!-- Modern Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- App Container -->
+    <div class="app-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <img src="images/logo.png" alt="Kurs Logotyp" class="logo-img">
+                <div class="logo-text">
+                    <span class="title">IT-Läraren</span>
+                    <span class="subtitle">Gymnasiekurser</span>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <button class="nav-btn active" data-tab="dashboard">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    Översikt
+                </button>
+                <button class="nav-btn" data-tab="modules">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    Kursdelar
+                </button>
+                <button class="nav-btn" data-tab="search-panel">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    Sök resurser
+                </button>
+                <button class="nav-btn" data-tab="matrix">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line></svg>
+                    Kunskapsmatris
+                </button>
+                <button class="nav-btn" data-tab="about">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    Om & Resurser
+                </button>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Byt färgtema">
+                    <svg class="icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg class="icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <span class="theme-text">Mörkt läge</span>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Mobile Header Navigation -->
+        <header class="mobile-header">
+            <div class="mobile-brand">
+                <img src="images/logo.png" alt="Logotyp" class="logo-img-mobile">
+                <h1>DAODAC0</h1>
+            </div>
+            <button id="mobile-menu-btn" class="mobile-menu-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </header>
+        
+        <!-- Main Content Area -->
+        <main class="main-content">
+            
+            <!-- Dashboard View -->
+            <section id="dashboard" class="tab-content active">
+                <div class="welcome-banner">
+                    <div class="welcome-text">
+                        <h1>Dator- och nätverksteknik</h1>
+                        <p class="course-badge">Kurskod: DAODAC0 &bull; 100 poäng</p>
+                        <p class="course-desc">
+                            En gymnasiekurs som behandlar fördjupade kunskaper i hur datorer är uppbyggda, operativsystem, lokala nätverk, felsökning samt optimering. Planeringen är anpassad för elever utan tidigare förkunskaper i ämnet.
+                        </p>
+                        <p class="update-text">Uppdaterad: <strong>Augusti 2023</strong></p>
+                    </div>
+                    
+                    <div class="gauge-card">
+                        <div class="gauge-container">
+                            <svg class="gauge-svg" viewBox="0 0 100 100">
+                                <!-- Background Circle -->
+                                <circle class="gauge-bg" cx="50" cy="50" r="40" fill="none" stroke-width="8"></circle>
+                                <!-- Animated Value Circle -->
+                                <circle id="gauge-fill" class="gauge-fill" cx="50" cy="50" r="40" fill="none" stroke-width="8" stroke-dasharray="251.2" stroke-dashoffset="251.2"></circle>
+                            </svg>
+                            <div class="gauge-overlay">
+                                <span class="gauge-value" id="gauge-value-text">0%</span>
+                                <span class="gauge-label">Måluppfyllelse</span>
+                            </div>
+                        </div>
+                        <p class="gauge-desc">Bedömd måluppfyllelse för kursens upplägg: <strong>God (95%)</strong></p>
+                    </div>
+                </div>
+                
+                <!-- Quick Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-num" id="stat-modules">6</span>
+                        <span class="stat-lbl">Kursdelar</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num" id="stat-videos">30+</span>
+                        <span class="stat-lbl">Videogenomgångar</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num" id="stat-labs">15+</span>
+                        <span class="stat-lbl">Laborationer & Övningar</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num" id="stat-quizzes">15+</span>
+                        <span class="stat-lbl">Kahoot & Quizzar</span>
+                    </div>
+                </div>
+                
+                <!-- Course Structure Overview -->
+                <div class="overview-section">
+                    <h2>Kursens 6 Huvuddelar</h2>
+                    <div class="dashboard-modules-grid" id="dashboard-modules-grid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Info Cards -->
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>Om Kursupplägget</h3>
+                        <p>Denna kursplanering är ett förslag på upplägg där kursen delats in i 6 delar baserat på det centrala innehållet och kunskapskraven. Sedan 2016 har den ersatt datorteknik 1a på teknikprogrammet. Kursplaneringen utgår från att eleverna ej har förkunskaper.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Senaste Uppdateringar</h3>
+                        <p>Genomgångar för datorteknik och nätverksteknik har reviderats. Introduktion till molntjänster (Azure, M365) samt PowerShell har tillförts för att reflektera moderna IT-miljöer. Fler övningar och laborationer är på väg.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Modules View -->
+            <section id="modules" class="tab-content">
+                <div class="section-header">
+                    <h2>Kursens Delar & Innehåll</h2>
+                    <p>Utforska det centrala innehållet, resurser och betygskriterier för varje del i kursen.</p>
+                </div>
+                
+                <div class="modules-accordion" id="modules-accordion">
+                    <!-- Populated dynamically by app.js -->
+                </div>
+            </section>
+            
+            <!-- Search & Filter View -->
+            <section id="search-panel" class="tab-content">
+                <div class="section-header">
+                    <h2>Sök & Filtrera Kursmaterial</h2>
+                    <p>Hitta snabbt videoklipp, PDF-laborationer, quiz eller dokumentation i hela kursen.</p>
+                </div>
+                
+                <div class="filter-controls">
+                    <div class="search-box">
+                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" id="resource-search" placeholder="Sök efter innehåll (t.ex. Moderkort, IPv4, PowerShell)...">
+                        <button id="clear-search" class="clear-btn">&times;</button>
+                    </div>
+                    
+                    <div class="filters-grid">
+                        <div class="filter-group">
+                            <label for="filter-module">Kursdel</label>
+                            <select id="filter-module">
+                                <option value="all">Alla delar</option>
+                                <option value="1">Del 1: Hårdvara</option>
+                                <option value="2">Del 2: OS & Mjukvara</option>
+                                <option value="3">Del 3: Nätverk</option>
+                                <option value="4">Del 4: Kringutrustning</option>
+                                <option value="5">Del 5: Felsökning</option>
+                                <option value="6">Del 6: Slutuppgift</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="filter-type">Resurstyp</label>
+                            <select id="filter-type">
+                                <option value="all">Alla typer</option>
+                                <option value="video">Videor</option>
+                                <option value="lab">Laborationer & Övningar</option>
+                                <option value="quiz">Quizzar</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="filter-difficulty">Svårighetsgrad</label>
+                            <select id="filter-difficulty">
+                                <option value="all">Alla nivåer</option>
+                                <option value="enkel">Enkel</option>
+                                <option value="svår">Svår</option>
+                                <option value="avancerad">Avancerad</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="search-results-info" id="search-results-info">
+                    Hittade 0 resurser.
+                </div>
+                
+                <div class="resources-grid-view" id="resources-grid-view">
+                    <!-- Populated dynamically by app.js -->
+                </div>
+            </section>
+            
+            <!-- Knowledge Matrix View -->
+            <section id="matrix" class="tab-content">
+                <div class="section-header">
+                    <h2>Kunskapskrav & Betygskriterier</h2>
+                    <p>Kursens formella kunskapskrav från Skolverket, strukturerade efter de olika delområdena.</p>
+                    <div class="matrix-filter-buttons">
+                        <button class="matrix-level-btn active" data-level="all">Visa alla krav</button>
+                        <button class="matrix-level-btn" data-level="E">Endast E-krav</button>
+                        <button class="matrix-level-btn" data-level="C">Endast C-krav</button>
+                        <button class="matrix-level-btn" data-level="A">Endast A-krav</button>
+                    </div>
+                </div>
+                
+                <div class="matrix-table-container">
+                    <table class="matrix-table">
+                        <thead>
+                            <tr>
+                                <th>Kursdel & Delområde</th>
+                                <th class="col-e">Kunskapskrav E</th>
+                                <th class="col-c">Kunskapskrav C</th>
+                                <th class="col-a">Kunskapskrav A</th>
+                            </tr>
+                        </thead>
+                        <tbody id="matrix-tbody">
+                            <!-- Populated dynamically by app.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- About & Promos View -->
+            <section id="about" class="tab-content">
+                <div class="about-grid">
+                    <div class="about-main">
+                        <h2>Om IT-Läraren & Kursen</h2>
+                        <p>Detta material är framtaget för undervisning i gymnasiekursen Dator- och nätverksteknik. Materialet uppdateras och revideras kontinuerligt för att hålla sig aktuellt med den snabba tekniska utvecklingen.</p>
+                        
+                        <div class="contact-card">
+                            <h3>Använda materialet?</h3>
+                            <p>Vill ni använda materialet för undervisning eller har förslag och synpunkter? Kontakta IT-läraren för licensiering och samarbete.</p>
+                            <a href="mailto:info@itlararen.se" class="contact-email-btn">
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                Kontakta IT-läraren
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="about-sidebar">
+                        <h2>Rekommenderade Resurser</h2>
+                        <div class="promo-cards-container">
+                            <div class="promo-card spec-ubuntu">
+                                <div class="promo-header">
+                                    <span class="promo-tag">Bok</span>
+                                    <h3>Ubuntuboken</h3>
+                                </div>
+                                <p>Lär dig allt om Ubuntu - världens populäraste Linuxdistribution. Utgiven 2010, uppdaterad 2016.</p>
+                                <a href="http://www.ubuntuboken.se" target="_blank" class="promo-btn">Besök ubuntuboken.se</a>
+                            </div>
+                            
+                            <div class="promo-card spec-ms">
+                                <div class="promo-header">
+                                    <span class="promo-tag">Certifiering</span>
+                                    <h3>Microsoft Certifikat</h3>
+                                </div>
+                                <p>Vad menas med MCITP, MCSA, MCTS, MTA, MCT? Läs mer om vad det innebär att vara certifierad hos Microsoft.</p>
+                                <a href="https://learn.microsoft.com/credentials/" target="_blank" class="promo-btn">Läs om certifiering</a>
+                            </div>
+                            
+                            <div class="promo-card spec-cisco">
+                                <div class="promo-header">
+                                    <span class="promo-tag">Akademi</span>
+                                    <h3>CISCO Academy</h3>
+                                </div>
+                                <p>Vad är CISCO Networking Academy? Läs mer om utbildningsprogrammet och om deras globala nätverkscertifikat.</p>
+                                <a href="http://www.netacad.com" target="_blank" class="promo-btn">Besök netacad.com</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+        </main>
+        
+    </div>
+    
+    <!-- Mobile Navigation Drawer Overlay -->
+    <div id="mobile-overlay" class="mobile-overlay"></div>
+    
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>
