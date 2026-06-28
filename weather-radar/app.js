@@ -1,7 +1,7 @@
 // Core Application State
 let map;
 let baseLayers = {};
-let currentBaseLayerName = 'dark';
+let currentBaseLayerName = 'light';
 let activeRadarLayers = [];
 let radarTimestamps = [];
 let radarPastCount = 0;
@@ -18,6 +18,8 @@ let isPlaying = false;
 let hourlyChart = null;
 let currentLat = 59.3293;
 let currentLon = 18.0686;
+let currentWindSpeed = 15;
+let currentTrajectoryAngle = 90;
 
 // WMO Weather Code Mapper
 function getWeatherInfo(code) {
@@ -54,6 +56,31 @@ function getWeatherInfo(code) {
   return codes[code] || { text: "Unknown Weather", icon: "cloud" };
 }
 
+// Destination point bearing/distance flat-earth helper for client-side weather drift simulation
+function movePoint(latlng, distanceKm, bearingDegrees) {
+  const R = 6371; // Earth radius in km
+  const brng = (bearingDegrees * Math.PI) / 180;
+  const lat1 = (latlng.lat * Math.PI) / 180;
+  const lon1 = (latlng.lng * Math.PI) / 180;
+  
+  const dDivR = distanceKm / R;
+  
+  const lat2 = Math.asin(
+    Math.sin(lat1) * Math.cos(dDivR) +
+    Math.cos(lat1) * Math.sin(dDivR) * Math.cos(brng)
+  );
+  
+  const lon2 = lon1 + Math.atan2(
+    Math.sin(brng) * Math.sin(dDivR) * Math.cos(lat1),
+    Math.cos(dDivR) - Math.sin(lat1) * Math.sin(lat2)
+  );
+  
+  return L.latLng(
+    (lat2 * 180) / Math.PI,
+    (lon2 * 180) / Math.PI
+  );
+}
+
 // ----------------------------------------------------
 // 1. Initializing the Map and Base TileLayers
 // ----------------------------------------------------
@@ -87,6 +114,7 @@ function initMap() {
 
   // Load dark theme layer by default
   baseLayers[currentBaseLayerName].addTo(map);
+
 }
 
 // Update Map Style from settings
@@ -111,12 +139,10 @@ async function fetchRadarConfig() {
     const data = await response.json();
     
     const host = data.host;
-    // Combine past radar timestamps and nowcast forecast timestamps
     const past = data.radar.past || [];
-    const nowcast = data.radar.nowcast || [];
     
     radarPastCount = past.length;
-    radarTimestamps = [...past, ...nowcast];
+    radarTimestamps = [...past];
     
     setupRadarLayers(host);
   } catch (error) {
@@ -129,7 +155,7 @@ async function fetchRadarConfig() {
 function setupRadarLayers(host) {
   // Clear any existing radar layers
   activeRadarLayers.forEach(layer => {
-    if (map.hasLayer(layer)) {
+    if (layer && map.hasLayer(layer)) {
       map.removeLayer(layer);
     }
   });
@@ -137,8 +163,8 @@ function setupRadarLayers(host) {
 
   if (radarTimestamps.length === 0) return;
 
-  // Build tile layer instances for each frame (fully pre-loaded with opacity 0)
-  activeRadarLayers = radarTimestamps.map((frame) => {
+  // Build tile layer instances for past frames
+  radarTimestamps.forEach((frame) => {
     const tileUrl = `${host}${frame.path}/256/{z}/{x}/{y}/${currentScheme}/1_1.png`;
     const layer = L.tileLayer(tileUrl, {
       attribution: '© <a href="https://www.rainviewer.com/">RainViewer</a>',
@@ -148,18 +174,18 @@ function setupRadarLayers(host) {
     });
     
     layer.addTo(map);
-    return layer;
+    activeRadarLayers.push(layer);
   });
 
-  // Setup Timeline Slider ranges
   const slider = document.getElementById('timeline-slider');
-  slider.max = radarTimestamps.length - 1;
-  slider.value = radarPastCount > 0 ? radarPastCount - 1 : 0; // Default to 'NOW' (last item of past list)
-  currentIndex = parseInt(slider.value, 10);
+  if (slider) {
+    slider.min = 0;
+    slider.max = radarTimestamps.length - 1;
+    slider.value = radarTimestamps.length - 1;
+    currentIndex = radarTimestamps.length - 1;
+  }
 
-  // Dynamically generate local-time tick marks on the timeline
   updateTimelineTicks();
-
   showFrame(currentIndex);
 }
 
@@ -172,20 +198,16 @@ function updateTimelineTicks() {
   
   const total = radarTimestamps.length;
   
-  // Choose key positions for local time ticks: Start, Mid-Past, NOW, and End
   const startIdx = 0;
-  const midPastIdx = Math.floor((radarPastCount - 1) / 2);
-  const nowIdx = radarPastCount - 1;
+  const midIdx = Math.floor(total / 2);
   const endIdx = total - 1;
-
+  
   const tickIndices = [
     { index: startIdx, label: 'Start' },
-    { index: midPastIdx, label: 'Mid' },
-    { index: nowIdx, label: 'NOW', isNow: true },
-    { index: endIdx, label: 'End' }
+    { index: midIdx, label: 'Mid' },
+    { index: endIdx, label: 'NOW', isNow: true }
   ];
   
-  // Filter duplicates and index out of bounds
   const uniqueTicks = [];
   const seenIndices = new Set();
   
@@ -207,10 +229,8 @@ function updateTimelineTicks() {
     }
   });
   
-  // Sort ticks by their timeline index position
   uniqueTicks.sort((a, b) => a.index - b.index);
   
-  // Render absolutely positioned tick marks
   uniqueTicks.forEach(tick => {
     const pct = (tick.index / (total - 1)) * 100;
     const span = document.createElement('span');
@@ -236,14 +256,15 @@ function updateTimelineTicks() {
 function showFrame(index) {
   if (activeRadarLayers.length === 0) return;
 
-  // Ensure index boundary
   if (index < 0) index = 0;
   if (index >= activeRadarLayers.length) index = activeRadarLayers.length - 1;
 
   currentIndex = index;
 
-  // Control opacity: Set active layer to current opacity and all others to 0
+  // Control opacity of RainViewer tile layers
   activeRadarLayers.forEach((layer, i) => {
+    if (!layer) return;
+    
     if (i === index) {
       layer.setOpacity(currentOpacity);
     } else {
@@ -256,7 +277,7 @@ function showFrame(index) {
 
   // Update time display
   const currentFrame = radarTimestamps[index];
-  const isForecast = index >= radarPastCount;
+  if (!currentFrame) return;
   
   const date = new Date(currentFrame.time * 1000);
   const hours = String(date.getHours()).padStart(2, '0');
@@ -267,23 +288,19 @@ function showFrame(index) {
   const statusPulse = document.getElementById('radar-status-pulse');
   const statusText = document.getElementById('radar-status-text');
   
-  if (isForecast) {
-    statusText.textContent = "RADAR FORECAST";
-    statusPulse.style.backgroundColor = "var(--accent)";
+  if (index === radarTimestamps.length - 1) {
+    statusText.textContent = "LIVE WEATHER RADAR";
   } else {
-    // If it's the most recent past frame (represented as NOW)
-    if (index === radarPastCount - 1) {
-      statusText.textContent = "LIVE WEATHER RADAR";
-    } else {
-      statusText.textContent = "RADAR HISTORY";
-    }
-    statusPulse.style.backgroundColor = "var(--success)";
+    statusText.textContent = "RADAR HISTORY";
   }
+  statusPulse.style.backgroundColor = "var(--success)";
 }
 
 function nextFrame() {
+  const max = activeRadarLayers.length - 1;
+
   let nextIdx = currentIndex + 1;
-  if (nextIdx >= activeRadarLayers.length) {
+  if (nextIdx > max) {
     nextIdx = 0; // Loop back to start
   }
   showFrame(nextIdx);
@@ -409,7 +426,7 @@ function displaySearchResults(results) {
 // ----------------------------------------------------
 async function fetchWeatherForecast(lat, lon) {
   try {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,surface_pressure&hourly=temperature_2m,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,surface_pressure&hourly=temperature_2m,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`;
     const response = await fetch(url);
     if (!response.ok) throw new Error("Could not fetch forecast.");
     const data = await response.json();
@@ -424,6 +441,7 @@ async function fetchWeatherForecast(lat, lon) {
     lucide.createIcons();
   }
 }
+
 
 function updateWeatherUI(data) {
   const current = data.current;
@@ -442,6 +460,37 @@ function updateWeatherUI(data) {
   document.getElementById('detail-wind').textContent = `${Math.round(current.wind_speed_10m)} km/h`;
   document.getElementById('detail-humidity').textContent = `${current.relative_humidity_2m}%`;
   document.getElementById('detail-pressure').textContent = `${Math.round(current.surface_pressure)} hPa`;
+  
+  // Calculate predicted weather trajectory based on current wind vectors
+  const windDir = current.wind_direction_10m || 0;
+  const windSpd = Math.round(current.wind_speed_10m || 0);
+  
+  // Weather systems blow *with* the wind, which is 180 degrees opposite to where the wind blows *from*
+  const trajectoryAngle = (windDir + 180) % 360;
+
+  // Store globally for radar forecast simulation
+  currentWindSpeed = windSpd;
+  currentTrajectoryAngle = trajectoryAngle;
+  
+  function getWindDirectionName(degree) {
+    const directions = [
+      { name: "North", min: 337.5, max: 360 },
+      { name: "North", min: 0, max: 22.5 },
+      { name: "Northeast", min: 22.5, max: 67.5 },
+      { name: "East", min: 67.5, max: 112.5 },
+      { name: "Southeast", min: 112.5, max: 157.5 },
+      { name: "South", min: 157.5, max: 202.5 },
+      { name: "Southwest", min: 202.5, max: 247.5 },
+      { name: "West", min: 247.5, max: 292.5 },
+      { name: "Northwest", min: 292.5, max: 337.5 }
+    ];
+    const matched = directions.find(d => degree >= d.min && degree < d.max);
+    return matched ? matched.name : "North";
+  }
+  
+  const moveDirection = getWindDirectionName(trajectoryAngle);
+  document.getElementById('trajectory-text').textContent = `Moving ${moveDirection} at ${windSpd} km/h`;
+  document.getElementById('trajectory-arrow').style.transform = `rotate(${trajectoryAngle}deg)`;
   
   // Estimate precipitation likelihood from the next hour's forecast
   const nextHourPrecip = data.hourly.precipitation_probability[0] || 0;
@@ -579,29 +628,24 @@ function render7DayForecast(daily) {
   const container = document.getElementById('forecast-list');
   container.innerHTML = '';
 
-  const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   for (let i = 0; i < 7; i++) {
     const date = new Date(daily.time[i]);
     
-    // For today, show "Today", otherwise weekday name
     let dayName = weekday[date.getDay()];
-    if (i === 0) dayName = "Today";
+    if (i === 0) dayName = "Tod";
 
     const wInfo = getWeatherInfo(daily.weather_code[i]);
     const maxTemp = Math.round(daily.temperature_2m_max[i]);
     const minTemp = Math.round(daily.temperature_2m_min[i]);
-    const maxPrecip = daily.precipitation_probability_max[i] || 0;
 
     const div = document.createElement('div');
     div.className = 'forecast-item';
     div.innerHTML = `
       <span class="forecast-day">${dayName}</span>
-      <div class="forecast-condition-group">
-        <div class="forecast-icon" title="${wInfo.text}">
-          <i data-lucide="${wInfo.icon}" style="width: 20px; height: 20px; color: var(--accent);"></i>
-        </div>
-        <span class="forecast-precip">${maxPrecip > 10 ? maxPrecip + '%' : ''}</span>
+      <div class="forecast-icon" title="${wInfo.text}">
+        <i data-lucide="${wInfo.icon}" style="width: 14px; height: 14px; color: var(--accent);"></i>
       </div>
       <div class="forecast-temps">
         <span class="temp-max">${maxTemp}°</span>
@@ -678,22 +722,21 @@ function setupEventListeners() {
   });
 
   // Settings Panel flyout toggle
-  const settingsBtn = document.getElementById('btn-settings');
-  const settingsFlyout = document.getElementById('settings-flyout');
-  
-  settingsBtn.addEventListener('click', (e) => {
+  const settingsPanel = document.getElementById('settings-flyout');
+  const settingsButton = document.getElementById('btn-settings');
+
+  settingsButton.addEventListener('click', (e) => {
     e.stopPropagation();
-    settingsFlyout.classList.toggle('active');
+    settingsPanel.classList.toggle('active');
   });
 
-  // Close flyout panel when clicking outside
   document.addEventListener('click', (e) => {
-    if (!settingsFlyout.contains(e.target) && e.target !== settingsBtn) {
-      settingsFlyout.classList.remove('active');
+    if (!settingsPanel.contains(e.target) && e.target !== settingsButton) {
+      settingsPanel.classList.remove('active');
     }
   });
 
-  // Radar settings controllers
+  // Radar opacity control slider
   document.getElementById('radar-opacity').addEventListener('input', (e) => {
     const val = parseInt(e.target.value, 10);
     currentOpacity = val / 100;

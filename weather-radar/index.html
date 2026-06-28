@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,17 +21,10 @@
     
     <!-- Left Sidebar (Weather Details) -->
     <aside class="sidebar glass-panel" id="sidebar">
-      <div class="sidebar-header">
-        <div class="brand">
-          <div class="brand-logo">
-            <i data-lucide="activity" style="width: 18px; height: 18px;"></i>
-          </div>
-          <h1 class="brand-name">AeroRadar</h1>
-        </div>
-        <button class="btn-icon" id="sidebar-close" title="Hide Sidebar" style="width: 36px; height: 36px; box-shadow: none; border-color: transparent;">
-          <i data-lucide="chevron-left"></i>
-        </button>
-      </div>
+      <!-- Absolute positioned close button inside relative sidebar -->
+      <button class="sidebar-close-btn" id="sidebar-close" title="Hide Sidebar">
+        <i data-lucide="chevron-left" style="width: 16px; height: 16px;"></i>
+      </button>
       
       <div class="sidebar-content">
         <!-- Current Weather Card -->
@@ -88,6 +81,20 @@
               <div class="detail-text">
                 <span class="detail-label">Pressure</span>
                 <span class="detail-value" id="detail-pressure">-- hPa</span>
+              </div>
+            </div>
+
+            <!-- Predicted Trajectory Row -->
+            <div class="detail-item" style="grid-column: span 2; display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="detail-icon"><i data-lucide="compass" style="width: 18px; height: 18px;"></i></div>
+                <div class="detail-text">
+                  <span class="detail-label">Predicted Trajectory</span>
+                  <span class="detail-value" id="trajectory-text">Calculating trajectory...</span>
+                </div>
+              </div>
+              <div id="trajectory-arrow" style="transform: rotate(0deg); transition: transform 0.8s ease; color: var(--accent); display: flex;">
+                <i data-lucide="arrow-up" style="width: 18px; height: 18px;"></i>
               </div>
             </div>
           </div>
@@ -155,7 +162,7 @@
             
             <!-- Dark/Light theme toggler -->
             <button class="btn-icon" id="btn-theme" title="Toggle Theme">
-              <i data-lucide="sun" id="theme-icon"></i>
+              <i data-lucide="moon" id="theme-icon"></i>
             </button>
           </div>
           
@@ -182,12 +189,13 @@
               <div class="setting-row">
                 <span class="setting-label">Map Style</span>
                 <select class="setting-select" id="map-style">
-                  <option value="dark" selected>Dark Matter (Default)</option>
-                  <option value="light">Positron (Light)</option>
+                  <option value="dark">Dark Matter</option>
+                  <option value="light" selected>Positron (Light, Default)</option>
                   <option value="osm">Standard Map</option>
                   <option value="satellite">Satellite Terrain</option>
                 </select>
               </div>
+
               
               <div class="setting-row">
                 <span class="setting-label">Playback Speed <span id="speed-val">1.0s</span></span>
@@ -223,13 +231,16 @@
               <div class="pulse-dot scanning" id="radar-status-pulse"></div>
               <span id="radar-status-text">LIVE WEATHER RADAR</span>
             </div>
+            
+
+            
             <span class="time-display" id="radar-time">--:--</span>
           </div>
           
           <div class="timeline-row">
             <!-- Play / Pause Button -->
             <button class="btn-play" id="btn-play-pause" title="Play Radar Animation">
-              <i data-lucide="play" id="play-icon" style="width: 20px; height: 20px; fill: white; margin-left: 2px;"></i>
+              <i data-lucide="play" id="play-icon" style="width: 14px; height: 14px; fill: white; margin-left: 1px;"></i>
             </button>
             
             <!-- Timeline Slider -->
