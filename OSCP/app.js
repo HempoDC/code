@@ -4,6 +4,26 @@
    local storage mechanisms, search filters, and progress calculations.
    ========================================================================== */
 
+import { initializeApp } from "firebase/app";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "firebase/auth";
+import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBjzH0TAsPe9wurm8A9chMnObvec7W-Zsc",
+  authDomain: "oscp-9eb23.firebaseapp.com",
+  projectId: "oscp-9eb23",
+  storageBucket: "oscp-9eb23.firebasestorage.app",
+  messagingSenderId: "660646456701",
+  appId: "1:660646456701:web:624ed5494c8fb89c1cf014"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const googleProvider = new GoogleAuthProvider();
+
+let currentUser = null;
+
 document.addEventListener('DOMContentLoaded', () => {
   
   // Helper to safely load JSON
@@ -348,6 +368,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     localStorage.setItem('oscp_mastered_subtopics', JSON.stringify(masteredSubtopics));
+    if (typeof saveUserData === 'function') saveUserData();
+    
+    updateDashboardData();
     updateMasteryProgressBar();
 
     // Re-render topic header count tag without completely rebuilding DOM node to keep animation stable
@@ -487,6 +510,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function saveTargets() {
     localStorage.setItem('oscp_targets', JSON.stringify(targetMachines));
+    if (typeof saveUserData === 'function') saveUserData();
   }
 
   function renderTrackerTable() {
@@ -640,21 +664,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const resetBtn = document.getElementById('reset-data');
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
-      if (confirm("WARNING: Are you sure you want to reset all syllabus progress, exam moments checklist, and target trackers? This cannot be undone.")) {
+      if (confirm('Are you sure you want to reset ALL your progress? This cannot be undone.')) {
         localStorage.removeItem('oscp_mastered_subtopics');
         localStorage.removeItem('oscp_targets');
         localStorage.removeItem('oscp_completed_practice');
-        
         masteredSubtopics = [];
+        targetMachines = JSON.parse(JSON.stringify(defaultTargets));
         completedPractice = [];
-        targetMachines = [
-          { name: 'AD-Set Client', type: 'Active Directory (Client)', points: 10, foothold: false, root: false, screenshot: false, verified: false },
-          { name: 'AD-Set DC', type: 'Active Directory (Domain Controller)', points: 30, foothold: false, root: false, screenshot: false, verified: false },
-          { name: 'Standalone Alpha', type: 'Standalone (20 pts)', points: 20, foothold: false, root: false, screenshot: false, verified: false },
-          { name: 'Standalone Beta', type: 'Standalone (20 pts)', points: 20, foothold: false, root: false, screenshot: false, verified: false },
-          { name: 'Standalone Gamma', type: 'Standalone (20 pts)', points: 20, foothold: false, root: false, screenshot: false, verified: false }
-        ];
-
+        if (typeof saveUserData === 'function') saveUserData();
+        
         saveTargets();
         switchTab('dashboard');
         updateDashboardData();
@@ -737,6 +755,9 @@ document.addEventListener('DOMContentLoaded', () => {
       completedPractice.push(machineName);
     }
     localStorage.setItem('oscp_completed_practice', JSON.stringify(completedPractice));
+    if (typeof saveUserData === 'function') saveUserData();
+    
+    updateDashboardData();
     renderPracticeTable();
   }
 
@@ -766,6 +787,67 @@ document.addEventListener('DOMContentLoaded', () => {
       filterDifficulty = chip.getAttribute('data-filter-difficulty');
       renderPracticeTable();
     });
+  });
+
+  // Auth Logic
+  const authBtn = document.getElementById('auth-btn');
+  const authBtnText = document.getElementById('auth-btn-text');
+
+  if (authBtn) {
+    authBtn.addEventListener('click', () => {
+      if (currentUser) {
+        signOut(auth);
+      } else {
+        signInWithPopup(auth, googleProvider);
+      }
+    });
+  }
+
+  async function loadUserData() {
+    if (!currentUser) return;
+    try {
+      const docRef = doc(db, "users", currentUser.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        masteredSubtopics = data.masteredSubtopics || [];
+        completedPractice = data.completedPractice || [];
+        targetMachines = data.targetMachines || defaultTargets;
+      }
+    } catch (e) {
+      console.error("Error loading user data:", e);
+    }
+    renderCategoryFilters();
+    if (currentTab === 'knowledge') renderKnowledgeGrid();
+    if (currentTab === 'tracker') renderTrackerTable();
+    if (currentTab === 'practice') renderPracticeTable();
+    updateDashboardData();
+  }
+
+  async function saveUserData() {
+    if (!currentUser) return;
+    try {
+      await setDoc(doc(db, "users", currentUser.uid), {
+        masteredSubtopics,
+        completedPractice,
+        targetMachines
+      });
+    } catch (e) {
+      console.error("Error saving user data:", e);
+    }
+  }
+
+  window.saveUserData = saveUserData;
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      currentUser = user;
+      if (authBtnText) authBtnText.textContent = "Sign Out";
+      loadUserData();
+    } else {
+      currentUser = null;
+      if (authBtnText) authBtnText.textContent = "Sign In";
+    }
   });
 
   // Initialize

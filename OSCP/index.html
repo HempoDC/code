@@ -89,6 +89,9 @@
           <p id="current-view-subtitle">Interactive tracker and statistics for your PEN-200 / OSCP prep.</p>
         </div>
         <div class="header-right">
+          <button id="auth-btn" class="action-btn" title="Sign in to sync progress">
+            <i class="fa-brands fa-google"></i> <span id="auth-btn-text">Sign In</span>
+          </button>
           <div class="cyber-time" id="clock">10:54:00</div>
           <button id="reset-data" class="action-btn-danger" title="Reset all progress indicators">
             <i class="fa-solid fa-trash-can"></i> Reset Progress
@@ -523,7 +526,16 @@
   <div id="toast" class="toast-notification">Copied to clipboard!</div>
 
   <!-- Scripts -->
+  <script type="importmap">
+    {
+      "imports": {
+        "firebase/app": "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js",
+        "firebase/auth": "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js",
+        "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+      }
+    }
+  </script>
   <script src="data.js"></script>
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
