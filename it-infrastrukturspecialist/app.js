@@ -959,9 +959,20 @@ const QUIZ_DATA = [
     }
 ];
 
+// Helper to safely load JSON
+function safeJSONParse(key, defaultValue) {
+    try {
+        const stored = localStorage.getItem(key);
+        return stored ? JSON.parse(stored) : defaultValue;
+    } catch (e) {
+        console.warn(`Error parsing localStorage key "${key}". Resetting to default.`);
+        return defaultValue;
+    }
+}
+
 // App State Management (Stored in localStorage)
 const AppState = {
-    completedQuizzes: JSON.parse(localStorage.getItem("infra_completed_quizzes")) || [],
+    completedQuizzes: safeJSONParse("infra_completed_quizzes", []),
     
     markQuizCompleted(quizId) {
         if (!this.completedQuizzes.includes(quizId)) {
