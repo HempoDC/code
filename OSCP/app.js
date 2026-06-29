@@ -55,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // DOM Elements cache
   const navButtons = document.querySelectorAll('.nav-btn');
   const sections = document.querySelectorAll('.view-section');
-  const clockElement = document.getElementById('clock');
   const masteryPercentText = document.getElementById('mastery-percent');
   const masteryBarFill = document.getElementById('mastery-bar');
   
@@ -78,19 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
     practice: { title: 'CTF Practice Machines Guide', subtitle: 'Curated list of vulnerable targets from PG, HTB, and VulnHub matching exam skillsets.' },
     resources: { title: 'Quick References & File Transfers', subtitle: 'Crucial cheat sheets, direct tools links, and network transfer commands.' }
   };
-
-  /* ==========================================================================
-     Clock System
-     ========================================================================== */
-  function updateClock() {
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-    clockElement.textContent = `${hours}:${minutes}:${seconds}`;
-  }
-  setInterval(updateClock, 1000);
-  updateClock();
 
   /* ==========================================================================
      Tab Switch System
