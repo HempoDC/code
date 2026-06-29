@@ -1,3 +1,26 @@
+import { initializeApp } from "firebase/app";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "firebase/auth";
+import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBjzH0TAsPe9wurm8A9chMnObvec7W-Zsc",
+  authDomain: "oscp-9eb23.firebaseapp.com",
+  projectId: "oscp-9eb23",
+  storageBucket: "oscp-9eb23.firebasestorage.app",
+  messagingSenderId: "660646456701",
+  appId: "1:660646456701:web:234125dbaa52cb551cf014"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({
+  prompt: 'select_account'
+});
+
+let currentUser = null;
+
 // IT Infrastructure Specialist Study Portal - Database & App Logic
 
 // 1. Study Modules Database (with self-contained reading content)
@@ -978,6 +1001,7 @@ const AppState = {
         if (!this.completedQuizzes.includes(quizId)) {
             this.completedQuizzes.push(quizId);
             localStorage.setItem("infra_completed_quizzes", JSON.stringify(this.completedQuizzes));
+            saveUserData();
         }
     },
     
@@ -988,8 +1012,38 @@ const AppState = {
     resetProgress() {
         this.completedQuizzes = [];
         localStorage.removeItem("infra_completed_quizzes");
+        saveUserData();
     }
 };
+
+async function saveUserData() {
+  if (!currentUser) return;
+  try {
+    await setDoc(doc(db, "users", currentUser.uid), {
+      completedQuizzes: AppState.completedQuizzes
+    }, { merge: true });
+  } catch (e) {
+    console.error("Error saving to Firestore", e);
+  }
+}
+
+async function loadUserData() {
+  if (!currentUser) return;
+  try {
+    const docRef = doc(db, "users", currentUser.uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      if (data.completedQuizzes) {
+        AppState.completedQuizzes = data.completedQuizzes;
+        localStorage.setItem("infra_completed_quizzes", JSON.stringify(AppState.completedQuizzes));
+      }
+      renderDashboardModules();
+    }
+  } catch (e) {
+    console.error("Error loading user data:", e);
+  }
+}
 
 // UI Initialization
 document.addEventListener("DOMContentLoaded", () => {
@@ -1683,3 +1737,89 @@ function setupSvgGradients() {
 
 // Make openResource globally accessible
 window.openResource = openResource;
+
+/* ==========================================================================
+   Toast Notification System
+   ========================================================================== */
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  if (!toast) return;
+  toast.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2500);
+}
+
+/* ==========================================================================
+   Settings Modal & Global Reset
+   ========================================================================== */
+const settingsBtn = document.getElementById('settings-open-btn');
+const settingsModal = document.getElementById('settings-modal');
+const settingsCloseBtn = document.getElementById('settings-close-btn');
+
+if (settingsBtn && settingsModal) {
+  settingsBtn.addEventListener('click', () => {
+    settingsModal.classList.add('show');
+  });
+
+  settingsCloseBtn.addEventListener('click', () => {
+    settingsModal.classList.remove('show');
+  });
+
+  // Close when clicking outside the modal content
+  settingsModal.addEventListener('click', (e) => {
+    if (e.target === settingsModal) {
+      settingsModal.classList.remove('show');
+    }
+  });
+}
+
+const resetBtn = document.getElementById('reset-data');
+if (resetBtn) {
+  resetBtn.addEventListener('click', () => {
+    if (confirm('Är du säker på att du vill återställa all din data?')) {
+      AppState.resetProgress();
+      updateProgressGauge();
+      renderDashboardModules();
+      showToast("Data har återställts.");
+      
+      if (settingsModal) {
+        settingsModal.classList.remove('show');
+      }
+    }
+  });
+}
+
+/* ==========================================================================
+   Auth Logic
+   ========================================================================== */
+const authBtn = document.getElementById('auth-btn');
+const authBtnText = document.getElementById('auth-btn-text');
+
+if (authBtn) {
+  authBtn.addEventListener('click', () => {
+    if (currentUser) {
+      signOut(auth).then(() => showToast("Utloggad!"));
+    } else {
+      signInWithPopup(auth, googleProvider).then(() => {
+        showToast("Inloggad!");
+      }).catch(err => {
+        if (err.code !== 'auth/popup-closed-by-user') {
+          showToast("Kunde inte logga in.");
+        }
+      });
+    }
+  });
+}
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    currentUser = user;
+    if (authBtnText) authBtnText.textContent = "Logga ut";
+    loadUserData();
+  } else {
+    currentUser = null;
+    if (authBtnText) authBtnText.textContent = "Logga in";
+  }
+});

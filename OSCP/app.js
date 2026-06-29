@@ -21,6 +21,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({
+  prompt: 'select_account'
+});
 
 let currentUser = null;
 
@@ -807,9 +810,17 @@ document.addEventListener('DOMContentLoaded', () => {
   if (authBtn) {
     authBtn.addEventListener('click', () => {
       if (currentUser) {
-        signOut(auth);
+        signOut(auth).then(() => {
+          showToast("Successfully signed out.");
+        });
       } else {
-        signInWithPopup(auth, googleProvider);
+        signInWithPopup(auth, googleProvider).then(() => {
+          showToast("Successfully signed in!");
+        }).catch(err => {
+          if (err.code !== 'auth/popup-closed-by-user') {
+            showToast("Error signing in.");
+          }
+        });
       }
     });
   }
