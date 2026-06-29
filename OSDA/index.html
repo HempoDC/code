@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OSDA Prep Portal & Defensive Analyst Guide</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  <!-- FontAwesome for Cyber Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  
+  <!-- Cyber Background Animations -->
+  <div class="cyber-bg">
+    <div class="grid-overlay"></div>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+  </div>
+
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo-box" style="background: linear-gradient(135deg, var(--neon-purple), var(--neon-blue));">
+          <i class="fa-solid fa-shield-halved logo-icon"></i>
+        </div>
+        <div class="brand-text">
+          <h1>ANTIGRAVITY</h1>
+          <span>OSDA GUIDE v1.0</span>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <button class="nav-btn active" data-tab="dashboard">
+          <i class="fa-solid fa-gauge-high"></i>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-btn" data-tab="knowledge">
+          <i class="fa-solid fa-book-open"></i>
+          <span>SOC Topics</span>
+        </button>
+        <button class="nav-btn" data-tab="timeline">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Detection Moments</span>
+        </button>
+        <button class="nav-btn" data-tab="generator">
+          <i class="fa-solid fa-terminal"></i>
+          <span>SIEM Query Builder</span>
+        </button>
+        <button class="nav-btn" data-tab="tracker">
+          <i class="fa-solid fa-square-check"></i>
+          <span>Incident Tracker</span>
+        </button>
+        <button class="nav-btn" data-tab="practice">
+          <i class="fa-solid fa-gamepad"></i>
+          <span>CTF Prep</span>
+        </button>
+        <button class="nav-btn" data-tab="resources">
+          <i class="fa-solid fa-circle-nodes"></i>
+          <span>Quick Resources</span>
+        </button>
+      </nav>
+
+      <div class="progress-widget">
+        <div class="progress-info">
+          <span>Overall Mastery</span>
+          <span id="mastery-percent">0%</span>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="mastery-bar"></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top header bar -->
+      <header class="content-header">
+        <div class="header-left">
+          <h2 id="current-view-title">Dashboard Overview</h2>
+          <p id="current-view-subtitle">Interactive tracker and statistics for your SOC-200 / OSDA prep.</p>
+        </div>
+        <div class="header-right">
+          <div class="cyber-time" id="clock">10:54:00</div>
+          <button id="reset-data" class="action-btn-danger" title="Reset all progress indicators">
+            <i class="fa-solid fa-trash-can"></i> Reset Progress
+          </button>
+        </div>
+      </header>
+
+      <!-- View Containers -->
+      <section class="view-section active" id="view-dashboard">
+        <!-- Statistics Widgets -->
+        <div class="stats-grid">
+          <div class="stat-card glass-card">
+            <div class="stat-icon-wrapper blue-glow">
+              <i class="fa-solid fa-circle-nodes"></i>
+            </div>
+            <div class="stat-data">
+              <span class="stat-value" id="stats-total-topics">0 / 0</span>
+              <span class="stat-label">Syllabus Subtopics Mastered</span>
+            </div>
+          </div>
+
+          <div class="stat-card glass-card">
+            <div class="stat-icon-wrapper purple-glow">
+              <i class="fa-solid fa-trophy"></i>
+            </div>
+            <div class="stat-data">
+              <span class="stat-value" id="stats-completion-badge">NOVICE</span>
+              <span class="stat-label">Certification Readiness State</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Layout columns -->
+        <div class="dashboard-columns">
+          
+          <div class="column-left glass-card">
+            <h3><i class="fa-solid fa-circle-info text-blue"></i> Analyst Strategy Guidelines</h3>
+            <ul class="strategy-list">
+              <li>
+                <div class="bullet-checklist-item">
+                  <i class="fa-solid fa-caret-right text-blue"></i>
+                  <span>Establish standard time-alignment baseline across target clocks immediately.</span>
+                </div>
+              </li>
+              <li>
+                <div class="bullet-checklist-item">
+                  <i class="fa-solid fa-caret-right text-blue"></i>
+                  <span>Check log source statuses to confirm Sysmon, Linux auditd, and HTTP logs are feeding the SIEM.</span>
+                </div>
+              </li>
+              <li>
+                <div class="bullet-checklist-item">
+                  <i class="fa-solid fa-caret-right text-blue"></i>
+                  <span>Create query outlines for rapid process tracking, logon audits, and AD ticket dumps.</span>
+                </div>
+              </li>
+              <li>
+                <div class="bullet-checklist-item">
+                  <i class="fa-solid fa-caret-right text-blue"></i>
+                  <span>Document exact timestamps (UTC) of actions to construct a chronological incident path.</span>
+                </div>
+              </li>
+              <li>
+                <div class="bullet-checklist-item">
+                  <i class="fa-solid fa-caret-right text-blue"></i>
+                  <span>Identify administrative parent process chains (like wmiprvse.exe or psexec.exe child commands).</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="column-right glass-card">
+            <h3><i class="fa-solid fa-shield-halved text-purple"></i> OSDA Point System Reference</h3>
+            <table class="points-table">
+              <thead>
+                <tr>
+                  <th>Incident Type</th>
+                  <th>Points</th>
+                  <th>Criteria Requirements</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-teal font-bold">Target Phase 1 (Web Attack)</td>
+                  <td>20 pts</td>
+                  <td>Trace initial entry path, identify source IP, and log timestamps.</td>
+                </tr>
+                <tr>
+                  <td class="text-blue">Target Phase 2 (Local Escalation)</td>
+                  <td>20 pts</td>
+                  <td>Identify administrative exploit utility and process parent IDs.</td>
+                </tr>
+                <tr>
+                  <td class="text-blue">Target Phase 3 (Lateral Hops)</td>
+                  <td>20 pts</td>
+                  <td>Document remote execution protocol, user details, and targeted endpoints.</td>
+                </tr>
+                <tr>
+                  <td class="text-blue">Target Phase 4 (Domain Compromise)</td>
+                  <td>20 pts</td>
+                  <td>Detect Active Directory DCSync queries or Golden ticket attacks.</td>
+                </tr>
+                <tr class="highlight-row">
+                  <td class="text-purple">Report Completeness</td>
+                  <td>20 pts</td>
+                  <td>Accurate incident timeline, remediation checklists, and query logs.</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="points-disclaimer">
+              <i class="fa-solid fa-triangle-exclamation"></i> <strong>Passing Score:</strong> 70 points minimum. Ensure all logs screenshots are saved.
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Knowledge Base Section -->
+      <section class="view-section" id="view-knowledge">
+        <div class="search-filter-bar">
+          <div class="search-input-wrapper">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="knowledge-search" placeholder="Search event logs, SIEM queries, Wireshark filters (e.g. Sysmon, Event ID, Kerberos)...">
+          </div>
+          <div class="category-selectors" id="category-filters">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <div id="knowledge-container" class="knowledge-grid">
+          <!-- Dynamic topic grids populated via JS -->
+        </div>
+      </section>
+
+      <!-- Exam Moments Timeline Section -->
+      <section class="view-section" id="view-timeline">
+        <div class="timeline-intro">
+          <p>The OSDA exam requires a structured incident response methodology. Track log events, check timestamps, and catalog attackers' actions as they proceed through the target network. Use this guide to manage your 24h timeline.</p>
+        </div>
+        <div class="timeline-container" id="timeline-flow">
+          <!-- Dynamic timeline milestones populated via JS -->
+        </div>
+      </section>
+
+      <!-- SIEM Query Builder Section -->
+      <section class="view-section" id="view-generator">
+        <div class="shell-builder-grid">
+          
+          <div class="builder-inputs glass-card">
+            <h3><i class="fa-solid fa-sliders text-teal"></i> SIEM Search Parameters</h3>
+            <p class="section-desc">Enter details of suspected malicious activity to dynamically output KQL and Splunk SPL search queries.</p>
+            
+            <div class="form-group">
+              <label for="attacker_ip">Attacker IP Address</label>
+              <input type="text" id="attacker_ip" value="10.10.14.5" placeholder="e.g. 10.10.14.5">
+            </div>
+
+            <div class="form-group">
+              <label for="target_host">Target Hostname / IP</label>
+              <input type="text" id="target_host" value="WIN-DC01" placeholder="e.g. WIN-DC01">
+            </div>
+
+            <div class="form-group">
+              <label for="target_user">Target Account Username</label>
+              <input type="text" id="target_user" value="Administrator" placeholder="e.g. Administrator">
+            </div>
+
+            <div class="form-group">
+              <label for="process_name">Target Process Name</label>
+              <input type="text" id="process_name" value="psexec.exe" placeholder="e.g. psexec.exe">
+            </div>
+          </div>
+
+          <div class="builder-outputs">
+            <div class="shell-card glass-card">
+              <div class="shell-card-header">
+                <h4><i class="fa-solid fa-terminal text-blue"></i> Process Creation Queries (KQL & SPL)</h4>
+                <button class="copy-shell-btn" data-target="q-process"><i class="fa-regular fa-copy"></i> Copy</button>
+              </div>
+              <pre><code class="language-txt" id="q-process">loading...</code></pre>
+            </div>
+
+            <div class="shell-card glass-card">
+              <div class="shell-card-header">
+                <h4><i class="fa-solid fa-shield-cat text-teal"></i> Authentication Logons Queries (KQL & SPL)</h4>
+                <button class="copy-shell-btn" data-target="q-auth"><i class="fa-regular fa-copy"></i> Copy</button>
+              </div>
+              <pre><code class="language-txt" id="q-auth">loading...</code></pre>
+            </div>
+
+            <div class="shell-card glass-card">
+              <div class="shell-card-header">
+                <h4><i class="fa-solid fa-network-wired text-purple"></i> Network Connections Queries (KQL & SPL)</h4>
+                <button class="copy-shell-btn" data-target="q-network"><i class="fa-regular fa-copy"></i> Copy</button>
+              </div>
+              <pre><code class="language-txt" id="q-network">loading...</code></pre>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Exam Day Target Tracker Section -->
+      <section class="view-section" id="view-tracker">
+        <div class="tracker-intro">
+          <p>Use this real-time tracker during your actual OSDA exam session to record investigations, confirm log backups, and tally secured points. <strong>All data stays locally in your browser.</strong></p>
+        </div>
+        
+        <div class="tracker-grid">
+          
+          <div class="tracker-sidebar glass-card">
+            <h3><i class="fa-solid fa-bullseye text-red"></i> Incident Score Counter</h3>
+            <div class="score-display">
+              <span class="score-number" id="live-score">0</span>
+              <span class="score-label">Points Secured</span>
+            </div>
+            <div class="score-bar-bg">
+              <div class="score-bar-fill" id="live-score-bar"></div>
+            </div>
+            <div class="score-status text-center" id="live-score-status">
+              70 Points Required to Pass
+            </div>
+          </div>
+
+          <div class="tracker-content glass-card">
+            <div class="tracker-header-controls">
+              <h3><i class="fa-solid fa-list-check text-blue"></i> Incident Logs Audit</h3>
+              <button class="action-btn" id="add-target-btn"><i class="fa-solid fa-plus"></i> Add Custom Incident</button>
+            </div>
+
+            <div class="table-container">
+              <table class="tracker-table" id="exam-tracker-table">
+                <thead>
+                  <tr>
+                    <th>Target Incident</th>
+                    <th>Type</th>
+                    <th>Log Ingested</th>
+                    <th>Recon Tracked</th>
+                    <th>Escalation Traced</th>
+                    <th>Timeline Logged</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tracker-tbody">
+                  <!-- Generated dynamically via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- CTF Prep Section -->
+      <section class="view-section" id="view-practice">
+        <div class="tracker-intro">
+          <p>Practice makes perfect. Below is a curated database of recommended vulnerable machines and incident response logs challenges from CyberDefenders, HTB Sherlocks, and Proving Grounds that match the OSDA SOC syllabus. Use filters to study log analysis.</p>
+        </div>
+
+        <div class="tracker-content glass-card" style="margin-bottom: 30px; padding: 24px;">
+          <h3><i class="fa-solid fa-filter text-blue"></i> Filter Practice Labs</h3>
+          <div class="category-selectors" style="margin-top: 15px; gap: 15px; display: flex; flex-direction: column;">
+            <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+              <span style="font-size: 0.85rem; color: var(--text-secondary); width: 80px; font-weight: 600;">Platform:</span>
+              <div class="filter-group-platform" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <div class="filter-chip active" data-filter-platform="all">All Platforms</div>
+                <div class="filter-chip" data-filter-platform="CyberDefenders">CyberDefenders</div>
+                <div class="filter-chip" data-filter-platform="Hack The Box (Sherlock)">HTB Sherlocks</div>
+                <div class="filter-chip" data-filter-platform="Proving Grounds">Proving Grounds</div>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+              <span style="font-size: 0.85rem; color: var(--text-secondary); width: 80px; font-weight: 600;">OS Type:</span>
+              <div class="filter-group-os" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <div class="filter-chip active" data-filter-os="all">All OS</div>
+                <div class="filter-chip" data-filter-os="Linux">Linux</div>
+                <div class="filter-chip" data-filter-os="Windows">Windows</div>
+                <div class="filter-chip" data-filter-os="Linux/Windows">Mixed</div>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+              <span style="font-size: 0.85rem; color: var(--text-secondary); width: 80px; font-weight: 600;">Difficulty:</span>
+              <div class="filter-group-difficulty" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <div class="filter-chip active" data-filter-difficulty="all">All Difficulties</div>
+                <div class="filter-chip" data-filter-difficulty="Easy">Easy</div>
+                <div class="filter-chip" data-filter-difficulty="Medium">Medium</div>
+                <div class="filter-chip" data-filter-difficulty="Hard">Hard</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tracker-content glass-card">
+          <div class="tracker-header-controls">
+            <h3><i class="fa-solid fa-gamepad text-teal"></i> Practical Investigation Labs</h3>
+            <span id="practice-count-summary" class="text-teal font-bold" style="font-size: 0.9rem;">Showing 0 / 0 Labs</span>
+          </div>
+
+          <div class="table-container">
+            <table class="tracker-table">
+              <thead>
+                <tr>
+                  <th style="text-align: left;">Lab Challenge Name</th>
+                  <th>Platform</th>
+                  <th>OS</th>
+                  <th>Difficulty</th>
+                  <th style="text-align: left;">Key Investigation Focus</th>
+                  <th>Practice State</th>
+                </tr>
+              </thead>
+              <tbody id="practice-tbody">
+                <!-- Populated dynamically via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Resources Section -->
+      <section class="view-section" id="view-resources">
+        <div class="shell-builder-grid">
+          
+          <!-- External Reference Links -->
+          <div class="builder-inputs glass-card">
+            <h3><i class="fa-solid fa-square-rss text-blue"></i> Essential Referentials</h3>
+            <p class="section-desc">Useful bookmarks and documentation links for SIEM query builders, packet analyzers, and log specs.</p>
+            
+            <div class="reference-links-grid">
+              <a href="https://www.elastic.co/guide/en/kibana/current/kuery-query.html" target="_blank" class="ref-link-card">
+                <div class="ref-icon text-teal"><i class="fa-solid fa-globe"></i></div>
+                <div class="ref-desc">
+                  <strong>Elastic KQL Guide</strong>
+                  <span>Kibana Query Language syntax documentation.</span>
+                </div>
+              </a>
+
+              <a href="https://docs.splunk.com/Documentation/Splunk/latest/SearchReference/WhatsInThisManual" target="_blank" class="ref-link-card">
+                <div class="ref-icon text-blue"><i class="fa-solid fa-globe"></i></div>
+                <div class="ref-desc">
+                  <strong>Splunk Search SPL Guide</strong>
+                  <span>Splunk search command catalog reference.</span>
+                </div>
+              </a>
+
+              <a href="https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/default.aspx" target="_blank" class="ref-link-card">
+                <div class="ref-icon text-purple"><i class="fa-brands fa-windows"></i></div>
+                <div class="ref-desc">
+                  <strong>Windows Events Library</strong>
+                  <span>Detailed description of every Windows Event ID.</span>
+                </div>
+              </a>
+
+              <a href="https://github.com/Neo23x0/sysmon-config" target="_blank" class="ref-link-card">
+                <div class="ref-icon text-red"><i class="fa-solid fa-code"></i></div>
+                <div class="ref-desc">
+                  <strong>Sysmon Config Reference</strong>
+                  <span>Neo23x0 standard configuration ruleset mappings.</span>
+                </div>
+              </a>
+
+              <a href="https://cyberdefenders.org/" target="_blank" class="ref-link-card">
+                <div class="ref-icon text-teal"><i class="fa-solid fa-gamepad"></i></div>
+                <div class="ref-desc">
+                  <strong>CyberDefenders</strong>
+                  <span>SOC incident detection labs platform.</span>
+                </div>
+              </a>
+
+              <a href="https://help.offsec.com/hc/en-us/articles/9329437149076-OSDA-Exam-Guide" target="_blank" class="ref-link-card">
+                <div class="ref-icon text-purple"><i class="fa-solid fa-circle-question"></i></div>
+                <div class="ref-desc">
+                  <strong>OffSec OSDA Exam Guide</strong>
+                  <span>Official instructions, point systems, and guidelines for analysts.</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Log Correlation Cheatsheet -->
+          <div class="builder-outputs">
+            <div class="shell-card glass-card">
+              <div class="shell-card-header">
+                <h4><i class="fa-solid fa-clock text-blue"></i> UTC Time Alignment (Linux/Windows)</h4>
+                <button class="copy-shell-btn" data-target="align-utc"><i class="fa-regular fa-copy"></i> Copy</button>
+              </div>
+              <pre><code class="language-bash" id="align-utc">w32tm /tz; date -u</code></pre>
+              <div class="shell-card-footer-desc">Check timezone offset settings on target systems to correlate timestamps accurately with the SIEM logs.</div>
+            </div>
+
+            <div class="shell-card glass-card">
+              <div class="shell-card-header">
+                <h4><i class="fa-solid fa-magnifying-glass-chart text-teal"></i> Tracing Executable Hash (PowerShell)</h4>
+                <button class="copy-shell-btn" data-target="win-hash"><i class="fa-regular fa-copy"></i> Copy</button>
+              </div>
+              <pre><code class="language-powershell" id="win-hash">Get-FileHash -Algorithm SHA256 C:\path\to\suspect.exe</code></pre>
+              <div class="shell-card-footer-desc">Compute executable hash on Windows target to search VirusTotal or look for known IOCs.</div>
+            </div>
+
+            <div class="shell-card glass-card">
+              <div class="shell-card-header">
+                <h4><i class="fa-solid fa-gears text-purple"></i> auditd Log Tracing (Linux)</h4>
+                <button class="copy-shell-btn" data-target="linux-auditd"><i class="fa-regular fa-copy"></i> Copy</button>
+              </div>
+              <pre><code class="language-bash" id="linux-auditd">ausearch -i -m SYSCALL -ts raw</code></pre>
+              <div class="shell-card-footer-desc">Query raw auditd syscall events from local cache, translating numeric values to readable strings (-i).</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Notification Banner -->
+  <div id="toast" class="toast-notification">Copied to clipboard!</div>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

