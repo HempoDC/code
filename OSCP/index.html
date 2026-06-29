@@ -35,6 +35,9 @@
           <h1>OSCP</h1>
           <span>PREP GUIDE v1.0</span>
         </div>
+        <button id="settings-open-btn" class="settings-btn" title="Open Settings">
+          <i class="fa-solid fa-gear"></i>
+        </button>
       </div>
 
       <nav class="nav-links">
@@ -89,12 +92,8 @@
           <p id="current-view-subtitle">Interactive tracker and statistics for your PEN-200 / OSCP prep.</p>
         </div>
         <div class="header-right">
-          <button id="auth-btn" class="action-btn" title="Sign in to sync progress">
+          <button id="auth-btn" class="google-auth-btn" title="Sign in to sync progress">
             <i class="fa-brands fa-google"></i> <span id="auth-btn-text">Sign In</span>
-          </button>
-          <div class="cyber-time" id="clock">10:54:00</div>
-          <button id="reset-data" class="action-btn-danger" title="Reset all progress indicators">
-            <i class="fa-solid fa-trash-can"></i> Reset Progress
           </button>
         </div>
       </header>
@@ -524,6 +523,25 @@
 
   <!-- Notification Banner -->
   <div id="toast" class="toast-notification">Copied to clipboard!</div>
+
+  <!-- Settings Modal -->
+  <div id="settings-modal" class="modal">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h2><i class="fa-solid fa-gear text-teal"></i> Settings</h2>
+        <button class="close-modal" id="settings-close-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="settings-group">
+          <h3>Data Management</h3>
+          <p class="settings-desc">Reset all syllabus progress, exam moments checklist, and target trackers. This action cannot be undone.</p>
+          <button id="reset-data" class="action-btn-danger">
+            <i class="fa-solid fa-trash-can"></i> Reset All Progress
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Scripts -->
   <script type="importmap">

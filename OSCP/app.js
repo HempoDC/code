@@ -659,8 +659,29 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     Global Reset Control
+     Settings Modal & Global Reset
      ========================================================================== */
+  const settingsBtn = document.getElementById('settings-open-btn');
+  const settingsModal = document.getElementById('settings-modal');
+  const settingsCloseBtn = document.getElementById('settings-close-btn');
+
+  if (settingsBtn && settingsModal) {
+    settingsBtn.addEventListener('click', () => {
+      settingsModal.classList.add('show');
+    });
+
+    settingsCloseBtn.addEventListener('click', () => {
+      settingsModal.classList.remove('show');
+    });
+
+    // Close when clicking outside the modal content
+    settingsModal.addEventListener('click', (e) => {
+      if (e.target === settingsModal) {
+        settingsModal.classList.remove('show');
+      }
+    });
+  }
+
   const resetBtn = document.getElementById('reset-data');
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
@@ -677,6 +698,10 @@ document.addEventListener('DOMContentLoaded', () => {
         switchTab('dashboard');
         updateDashboardData();
         showToast("All progress has been reset.");
+        
+        if (settingsModal) {
+          settingsModal.classList.remove('show');
+        }
       }
     });
   }
