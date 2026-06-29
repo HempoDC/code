@@ -1157,6 +1157,7 @@ pre code {
 
 .tracker-content {
   padding: 30px;
+  min-width: 0;
 }
 
 .tracker-header-controls {
@@ -1315,6 +1316,9 @@ pre code {
     grid-template-columns: 1fr;
   }
   .shell-builder-grid {
+    grid-template-columns: 1fr;
+  }
+  .tracker-grid {
     grid-template-columns: 1fr;
   }
 }

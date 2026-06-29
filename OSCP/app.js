@@ -9,8 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // State variables loaded from LocalStorage
   let currentTab = 'dashboard';
   let masteredSubtopics = JSON.parse(localStorage.getItem('oscp_mastered_subtopics')) || [];
-  let strategyChecks = JSON.parse(localStorage.getItem('oscp_strategy_checks')) || [false, false, false, false, false];
-  let completedMoments = JSON.parse(localStorage.getItem('oscp_completed_moments')) || [];
+
   
   // Default Target list for Exam Tracker
   let targetMachines = JSON.parse(localStorage.getItem('oscp_targets')) || [
@@ -30,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Dashboard stats
   const statTotalTopics = document.getElementById('stats-total-topics');
-  const statTotalMoments = document.getElementById('stats-total-moments');
+
   const statCompletionBadge = document.getElementById('stats-completion-badge');
   
   // Views headings
@@ -150,32 +149,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalSubtopics = calculateTotalSubtopics();
     statTotalTopics.textContent = `${masteredSubtopics.length} / ${totalSubtopics}`;
     
-    // Count total moment objectives completed
-    let totalChecklistItems = oscpData.moments.length;
-    let completedChecklistItems = completedMoments.length;
-    
-    statTotalMoments.textContent = `${completedChecklistItems} / ${totalChecklistItems}`;
-    
-    // Set checkboxes status
-    strategyChecks.forEach((checked, idx) => {
-      const checkbox = document.getElementById(`strat-${idx + 1}`);
-      if (checkbox) {
-        checkbox.checked = checked;
-      }
-    });
 
+    
     updateMasteryProgressBar();
-  }
-
-  // Dashboard Strategy check listeners
-  for (let i = 1; i <= 5; i++) {
-    const chk = document.getElementById(`strat-${i}`);
-    if (chk) {
-      chk.addEventListener('change', (e) => {
-        strategyChecks[i - 1] = e.target.checked;
-        localStorage.setItem('oscp_strategy_checks', JSON.stringify(strategyChecks));
-      });
-    }
   }
 
   /* ==========================================================================
@@ -381,9 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     oscpData.moments.forEach((mom, idx) => {
       const card = document.createElement('div');
-      
-      const isCompleted = completedMoments.includes(idx.toString());
-      card.className = `timeline-moment-card glass-card ${isCompleted ? 'completed' : ''}`;
+      card.className = 'timeline-moment-card glass-card';
       
       card.innerHTML = `
         <div class="moment-header">
@@ -391,9 +365,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <h4>${mom.moment}</h4>
             <span class="moment-badge">${mom.timeframe}</span>
           </div>
-          <button class="toggle-td-btn ${isCompleted ? 'secured' : ''}" data-idx="${idx}">
-            <i class="fa-solid ${isCompleted ? 'fa-circle-check' : 'fa-circle'}"></i> ${isCompleted ? 'Reviewed' : 'Mark Reviewed'}
-          </button>
         </div>
         <p class="moment-objective"><strong>Objective:</strong> ${mom.objective}</p>
         <ul class="moment-checklist"></ul>
@@ -412,39 +383,8 @@ document.addEventListener('DOMContentLoaded', () => {
         list.appendChild(li);
       });
 
-      // Event listener for Mark Reviewed toggle button
-      const reviewBtn = card.querySelector('.toggle-td-btn');
-      reviewBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleMomentReviewed(idx.toString(), reviewBtn);
-      });
-
       timelineFlow.appendChild(card);
     });
-  }
-
-  function toggleMomentReviewed(momentIdx, buttonElement) {
-    const index = completedMoments.indexOf(momentIdx);
-    if (index > -1) {
-      completedMoments.splice(index, 1);
-      buttonElement.classList.remove('secured');
-      buttonElement.innerHTML = `<i class="fa-solid fa-circle"></i> Mark Reviewed`;
-    } else {
-      completedMoments.push(momentIdx);
-      buttonElement.classList.add('secured');
-      buttonElement.innerHTML = `<i class="fa-solid fa-circle-check"></i> Reviewed`;
-    }
-    localStorage.setItem('oscp_completed_moments', JSON.stringify(completedMoments));
-    
-    // update parent card border glow
-    const card = buttonElement.closest('.timeline-moment-card');
-    if (card) {
-      if (completedMoments.includes(momentIdx)) {
-        card.classList.add('completed');
-      } else {
-        card.classList.remove('completed');
-      }
-    }
   }
 
 
@@ -686,13 +626,9 @@ document.addEventListener('DOMContentLoaded', () => {
     resetBtn.addEventListener('click', () => {
       if (confirm("WARNING: Are you sure you want to reset all syllabus progress, exam moments checklist, and target trackers? This cannot be undone.")) {
         localStorage.removeItem('oscp_mastered_subtopics');
-        localStorage.removeItem('oscp_strategy_checks');
-        localStorage.removeItem('oscp_completed_moments');
         localStorage.removeItem('oscp_targets');
         
         masteredSubtopics = [];
-        strategyChecks = [false, false, false, false, false];
-        completedMoments = [];
         targetMachines = [
           { name: 'AD-Set Client', type: 'Active Directory (Client)', points: 10, foothold: false, root: false, screenshot: false, verified: false },
           { name: 'AD-Set DC', type: 'Active Directory (Domain Controller)', points: 30, foothold: false, root: false, screenshot: false, verified: false },
