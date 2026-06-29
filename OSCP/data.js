@@ -308,5 +308,28 @@ const oscpData = {
         "Submit the PDF file through the OffSec portal and confirm submission confirmation email."
       ]
     }
+  ],
+  vulnerableMachines: [
+    { name: "ClamAV", platform: "Proving Grounds", difficulty: "Easy", os: "Linux", focus: "Exim Exploit / ClamAV service execution" },
+    { name: "SunsetDecoy", platform: "Proving Grounds", difficulty: "Easy", os: "Linux", focus: "Cronjob hijacking / honeypot analysis" },
+    { name: "Algernon", platform: "Proving Grounds", difficulty: "Medium", os: "Windows", focus: "PRTG Network Monitor exploit / unquoted paths" },
+    { name: "Hutchinson", platform: "Proving Grounds", difficulty: "Medium", os: "Windows", focus: "Active Directory / Jenkins exploit / GPP decryption" },
+    { name: "Kevin", platform: "Proving Grounds", difficulty: "Medium", os: "Windows", focus: "HP Power Manager RCE / Local privilege escalation" },
+    { name: "Hawat", platform: "Proving Grounds", difficulty: "Hard", os: "Linux", focus: "API webapp / Spring Cloud exploitation / SUID bypass" },
+    { name: "Medjed", platform: "Proving Grounds", difficulty: "Hard", os: "Windows", focus: "Webdav exploitation / service path hijacking" },
+    
+    { name: "Lame", platform: "Hack The Box", difficulty: "Easy", os: "Linux", focus: "Samba 3.0.20 exploit (CVE-2007-2447)" },
+    { name: "Blue", platform: "Hack The Box", difficulty: "Easy", os: "Windows", focus: "MS17-010 EternalBlue exploitation" },
+    { name: "Devel", platform: "Hack The Box", difficulty: "Easy", os: "Windows", focus: "Anonymous FTP upload to ASPX Web Shell / MS11-046" },
+    { name: "Optimum", platform: "Hack The Box", difficulty: "Easy", os: "Windows", focus: "HttpFileServer (HFS) exploit / MS16-032 Escalation" },
+    { name: "Shocker", platform: "Hack The Box", difficulty: "Easy", os: "Linux", focus: "CGI-BIN Script Shellshock exploitation (CVE-2014-6271)" },
+    { name: "Active", platform: "Hack The Box", difficulty: "Medium", os: "Windows", focus: "Active Directory / GPP decryption / Kerberoasting" },
+    { name: "Forest", platform: "Hack The Box", difficulty: "Medium", os: "Windows", focus: "Active Directory / AS-REP Roasting / BloodHound path analysis" },
+    { name: "Nibbles", platform: "Hack The Box", difficulty: "Easy", os: "Linux", focus: "Nibbleblog file upload vulnerability / sudo privileges" },
+    
+    { name: "Kioptrix Level 1", platform: "VulnHub", difficulty: "Easy", os: "Linux", focus: "Mod_SSL Apache exploit (OpenFuck) / Samba trans2" },
+    { name: "Brainpan 1", platform: "VulnHub", difficulty: "Medium", os: "Linux/Windows", focus: "Buffer Overflow (BOF) / stack manipulation" },
+    { name: "Stapler", platform: "VulnHub", difficulty: "Medium", os: "Linux", focus: "WordPress plugins exploitation / SUID Escalation" },
+    { name: "VulnOS 2", platform: "VulnHub", difficulty: "Medium", os: "Linux", focus: "Drupal RCE / Writable shared folder escalation" }
   ]
 };

