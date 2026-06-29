@@ -1755,41 +1755,19 @@ function showToast(message) {
    Settings Modal & Global Reset
    ========================================================================== */
 const settingsBtn = document.getElementById('settings-open-btn');
-const settingsModal = document.getElementById('settings-modal');
-const settingsCloseBtn = document.getElementById('settings-close-btn');
 
-if (settingsBtn && settingsModal) {
+if (settingsBtn) {
   settingsBtn.addEventListener('click', () => {
-    settingsModal.classList.add('show');
-  });
-
-  settingsCloseBtn.addEventListener('click', () => {
-    settingsModal.classList.remove('show');
-  });
-
-  // Close when clicking outside the modal content
-  settingsModal.addEventListener('click', (e) => {
-    if (e.target === settingsModal) {
-      settingsModal.classList.remove('show');
-    }
+    window.open('settings.html', 'Settings', 'width=600,height=400');
   });
 }
 
-const resetBtn = document.getElementById('reset-data');
-if (resetBtn) {
-  resetBtn.addEventListener('click', () => {
-    if (confirm('Är du säker på att du vill återställa all din data?')) {
-      AppState.resetProgress();
-      updateProgressGauge();
-      renderDashboardModules();
-      showToast("Data har återställts.");
-      
-      if (settingsModal) {
-        settingsModal.classList.remove('show');
-      }
-    }
-  });
-}
+window.handleDataReset = () => {
+  AppState.resetProgress();
+  updateProgressGauge();
+  renderDashboardModules();
+  showToast("Data har återställts.");
+};
 
 /* ==========================================================================
    Auth Logic

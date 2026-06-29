@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html lang="sv" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inställningar | IT-infrastrukturspecialist</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Main Style -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { padding: 40px; }
+        .settings-container { max-width: 600px; margin: 0 auto; }
+        .settings-header { margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+        .action-btn-danger {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .action-btn-danger:hover {
+            background-color: #ef4444;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <div class="settings-header">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 28px; height: 28px;"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <h2>Inställningar</h2>
+        </div>
+        
+        <div class="settings-group glass-card" style="padding: 24px; border-radius: 16px; background-color: var(--card-bg); border: 1px solid var(--border-color); box-shadow: 0 4px 20px var(--shadow-color);">
+            <h3>Datahantering</h3>
+            <p class="settings-desc" style="margin: 12px 0; color: var(--text-secondary); font-size: 15px;">Återställ alla framsteg i dina quizz. Denna åtgärd kan inte ångras.</p>
+            <button id="reset-data" class="action-btn-danger">
+                Återställ data
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Use light/dark theme based on localStorage preference
+        const currentTheme = localStorage.getItem("infra_theme") || "dark";
+        document.documentElement.setAttribute('data-theme', currentTheme);
+
+        const resetBtn = document.getElementById('reset-data');
+        if (resetBtn) {
+            resetBtn.addEventListener('click', () => {
+                if (confirm('Är du säker på att du vill återställa all din data?')) {
+                    if (window.opener && window.opener.handleDataReset) {
+                        window.opener.handleDataReset();
+                    } else {
+                        localStorage.removeItem("infra_completed_quizzes");
+                    }
+                    window.close();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
