@@ -1100,7 +1100,6 @@ function updateProgressGauge() {
 // Global Theme Management
 function initTheme() {
     const themeToggle = document.getElementById("theme-toggle");
-    const themeText = document.querySelector(".theme-text");
     
     const savedTheme = localStorage.getItem("theme") || "dark";
     document.documentElement.setAttribute("data-theme", savedTheme);
@@ -1116,7 +1115,7 @@ function initTheme() {
 }
 
 function updateThemeUI(theme) {
-    const themeText = document.querySelector(".theme-text");
+    const themeText = document.querySelector("#theme-toggle .theme-text");
     if (!themeText) return;
     themeText.textContent = theme === "dark" ? "Ljust läge" : "Mörkt läge";
 }
